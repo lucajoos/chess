@@ -18,7 +18,8 @@ class Board:
                         if position.isnumeric():
                             col_index += int(position)
                         else:
-                            self.squares[row_index][col_index].piece = Piece(position.lower(), 'w' if position.isupper() else 'b')
+                            self.squares[row_index][col_index].piece = Piece(position.lower(),
+                                                                             'w' if position.isupper() else 'b')
                             col_index += 1
 
     def calculate_possible_moves(self, square):
@@ -35,16 +36,27 @@ class Board:
                 if not piece.was_moved:
                     possible_moves.append((row + piece.direction * 2, col))
 
-            for index, (row, col) in enumerate(possible_moves):
-                if row > 7 or row < 0 or col > 7 or col < 0:
-                    possible_moves.pop(index)
+            if piece.name == 'n':
+                possible_moves = [
+                    (row + 1, col + 2),
+                    (row + 2, col + 1),
+                    (row - 1, col + 2),
+                    (row - 2, col + 1),
+                    (row + 1, col - 2),
+                    (row + 2, col - 1),
+                    (row - 1, col - 2),
+                    (row - 2, col - 1),
+                ]
+
+            for index, move in enumerate(list(possible_moves)):
+                row, col = move
+                if not Square.in_range(row, col):
+                    possible_moves.remove(move)
                 else:
                     target_square = self.squares[row][col]
 
                     if target_square.piece is not None:
                         if target_square.piece.color == square.piece.color:
-                            possible_moves.pop(index)
+                            possible_moves.remove(move)
 
         return possible_moves
-
-
