@@ -3,7 +3,6 @@ import pygame.draw
 from board import Board
 from const import ROWS, COLS, SQUARE_SIZE
 
-
 class Game:
     def __init__(self):
         self.board = Board()
@@ -18,5 +17,5 @@ class Game:
             for col in range(COLS):
                 piece = self.board.squares[row][col].piece
 
-                if piece is not None:
+                if piece is not None and piece.is_visible:
                     surface.blit(piece.img, piece.img.get_rect(center=(col * SQUARE_SIZE + SQUARE_SIZE // 2, row * SQUARE_SIZE + SQUARE_SIZE // 2)))

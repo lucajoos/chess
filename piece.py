@@ -14,6 +14,7 @@ class Piece:
         self.was_moved = False
         self.dir = -1 if color == 'w' else 1
         self.img = None
+        self.is_visible = True
 
         self.set_texture()
 
