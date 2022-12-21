@@ -19,4 +19,4 @@ class Game:
                 piece = self.board.squares[row][col].piece
 
                 if piece is not None:
-                    surface.blit(piece.img, piece.img.get_rect(center=(col * SQUARE_SIZE + SQUARE_SIZE / 2, row * SQUARE_SIZE + SQUARE_SIZE / 2)))
+                    surface.blit(piece.img, piece.img.get_rect(center=(col * SQUARE_SIZE + SQUARE_SIZE // 2, row * SQUARE_SIZE + SQUARE_SIZE // 2)))
