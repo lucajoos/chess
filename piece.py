@@ -9,10 +9,10 @@ class Piece:
     def __init__(self, name, color):
         self.name = name
         self.color = color
-        self.value = (1 if color == 'w' else -1) * PIECE_VALUES.get(name)
+        self.direction = -1 if color == 'w' else 1
+        self.value = -1 * self.direction * PIECE_VALUES.get(name)
         self.moves = []
         self.was_moved = False
-        self.dir = -1 if color == 'w' else 1
         self.img = None
         self.is_visible = True
 

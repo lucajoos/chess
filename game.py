@@ -10,7 +10,7 @@ class Game:
     def draw_bg(self, surface):
         for row in range(ROWS):
             for col in range(COLS):
-                pygame.draw.rect(surface, (234, 235, 200) if (row + col) % 2 == 0 else (119, 154, 88), (col * SQUARE_SIZE, row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE))
+                pygame.draw.rect(surface, self.board.squares[row][col].color, (col * SQUARE_SIZE, row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE))
 
     def draw_pieces(self, surface):
         for row in range(ROWS):
