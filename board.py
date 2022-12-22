@@ -6,7 +6,7 @@ from square import Square
 class Board:
     def __init__(self):
         self.squares = [[Square(row, col, None) for col in range(COLS)] for row in range(ROWS)]
-        self.load('pppppppp/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1')
+        self.load('pp2pp2/8/4b/8/8/PP2PP2/8/8 w KQkq - 0 1')
 
     def load(self, string):
         for group_index, group in enumerate(string.split(' ')):
@@ -82,6 +82,69 @@ class Board:
                 if not is_empty:
                     break
         return possible_moves
+
+    def calculate_diagonal_moves(self, square):
+        piece = square.piece
+        row = square.row
+        col = square.col
+
+        possible_moves = []
+
+        if row < 7 and col < 7:
+            for i in range(1, 8 - max(row, col)):
+                target_piece = self.squares[row + i][col + i].piece
+                is_empty = target_piece is None
+
+                if not is_empty:
+                    if target_piece.color == piece.color:
+                        break
+
+                possible_moves.append((row + i, col + i))
+                
+                if not is_empty:
+                    break
+        if row > 0 and col > 0:
+            for i in range(1, max(row, col) + 1):
+                target_piece = self.squares[row - i][col - i].piece
+                is_empty = target_piece is None
+
+                if not is_empty:
+                    if target_piece.color == piece.color:
+                        break
+
+                possible_moves.append((row - i, col - i))
+
+                if not is_empty:
+                    break
+        if row > 0 and col < 7:
+            for i in range(1, min(row + 1, 8 - col)):
+                target_piece = self.squares[row - i][col + i].piece
+                is_empty = target_piece is None
+
+                if not is_empty:
+                    if target_piece.color == piece.color:
+                        break
+
+                possible_moves.append((row - i, col + i))
+
+                if not is_empty:
+                    break
+        if row < 7 and col > 0:
+            for i in range(1, min(8 - row, col + 1)):
+                target_piece = self.squares[row + i][col - i].piece
+                is_empty = target_piece is None
+
+                if not is_empty:
+                    if target_piece.color == piece.color:
+                        break
+
+                possible_moves.append((row + i, col - i))
+
+                if not is_empty:
+                    break
+
+        return possible_moves
+
     def calculate_possible_moves(self, square):
         piece = square.piece
         row = square.row
@@ -109,7 +172,7 @@ class Board:
                 ]
 
             if piece.name == 'b':
-                pass
+                possible_moves = self.calculate_diagonal_moves(square)
 
             if piece.name == 'r':
                 possible_moves = self.calculate_straight_moves(square)
