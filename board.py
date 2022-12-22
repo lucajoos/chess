@@ -7,6 +7,7 @@ class Board:
     def __init__(self):
         self.squares = None
         self.moves = None
+        self.active = 'w'
         self.reset()
 
     def reset(self):
@@ -27,6 +28,8 @@ class Board:
                             self.squares[row_index][col_index].piece = Piece(position.lower(),
                                                                              'w' if position.isupper() else 'b')
                             col_index += 1
+            elif group_index == 1:
+                self.active = group
 
     def calculate_straight_positions(self, square):
         piece = square.piece

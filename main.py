@@ -18,7 +18,6 @@ class Main:
         while True:
             self.loop()
 
-
     def loop(self):
         for event in pygame.event.get():
             self.drag.handle(self.game.board, event)
