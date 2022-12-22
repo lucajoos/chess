@@ -6,7 +6,7 @@ from square import Square
 class Board:
     def __init__(self):
         self.squares = [[Square(row, col, None) for col in range(COLS)] for row in range(ROWS)]
-        self.load('pp2pp2/8/4b/8/8/PP2PP2/8/8 w KQkq - 0 1')
+        self.load('pp2pp2/8/4q/8/8/PP2PP2/8/8 w KQkq - 0 1')
 
     def load(self, string):
         for group_index, group in enumerate(string.split(' ')):
@@ -159,7 +159,7 @@ class Board:
                 if not piece.was_moved:
                     possible_moves.append((row + piece.direction * 2, col))
 
-            if piece.name == 'n':
+            elif piece.name == 'n':
                 possible_moves = [
                     (row + 1, col + 2),
                     (row + 2, col + 1),
@@ -171,11 +171,14 @@ class Board:
                     (row - 2, col - 1),
                 ]
 
-            if piece.name == 'b':
+            elif piece.name == 'b':
                 possible_moves = self.calculate_diagonal_moves(square)
 
-            if piece.name == 'r':
+            elif piece.name == 'r':
                 possible_moves = self.calculate_straight_moves(square)
+
+            elif piece.name == 'q':
+                possible_moves = self.calculate_diagonal_moves(square) + self.calculate_straight_moves(square)
 
             for index, move in enumerate(list(possible_moves)):
                 if not Square.in_range(move[0], move[1]):
