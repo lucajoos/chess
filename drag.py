@@ -9,6 +9,7 @@ class Drag:
         self.is_dragging = False
         self.possible_positions = []
         self.initial_square = None
+        self.hovering_square = None
         self.pos = (0, 0)
 
     def reset(self):
@@ -26,6 +27,7 @@ class Drag:
         self.is_dragging = True
         self.possible_positions = board.calculate_possible_moves(target_square)
         self.initial_square = target_square
+        self.hovering_square = target_square
 
         target_square.highlight()
 
@@ -87,12 +89,26 @@ class Drag:
 
         if event.type == pygame.MOUSEMOTION and self.is_dragging:
             self.pos = event.pos
+
+            if self.hovering_square is not None:
+                self.hovering_square.has_border = False
+
+            target_position = (event.pos[1] // SQUARE_SIZE, event.pos[0] // SQUARE_SIZE)
+            target_square = board.squares[target_position[0]][target_position[1]]
+            target_square.has_border = True
+
+            self.hovering_square = target_square
+
         if event.type == pygame.MOUSEBUTTONUP:
             target_position = (event.pos[1] // SQUARE_SIZE, event.pos[0] // SQUARE_SIZE)
             target_square = board.squares[target_position[0]][target_position[1]]
 
+            if self.hovering_square is not None:
+                self.hovering_square.has_border = False
+
             self.pos = (0, 0)
             self.is_dragging = False
+            self.hovering_square = None
 
             if self.initial_square is not None:
                 if not self.initial_square.is_empty():

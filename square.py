@@ -9,6 +9,7 @@ class Square:
         self.is_dark = (self.row + self.col) % 2 == 0
         self.is_accented = False
         self.is_highlighted = False
+        self.has_border = False
         self.center = (col * SQUARE_SIZE + SQUARE_SIZE // 2, row * SQUARE_SIZE + SQUARE_SIZE // 2)
 
         self.color = None
@@ -16,17 +17,15 @@ class Square:
 
     def get_color(self, name):
         return COLORS.get(
-            f'SQUARE_DARK_{name}' if self.is_dark else f'SQUARE_LIGHT_{name}'
+            f'SQUARE_{"DARK" if self.is_dark else "LIGHT"}{"_HIGHLIGHT" if self.is_highlighted else ""}_{name}'
         )
 
     def color_reset(self):
         self.is_accented = False
         self.is_highlighted = False
-        self.color = self.get_color('DEFAULT')
 
     def highlight(self):
         self.is_highlighted = True
-        self.color = self.get_color('HIGHLIGHT')
 
     def is_empty(self):
         return self.piece is None

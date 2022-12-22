@@ -2,6 +2,7 @@ import pygame.draw
 
 from board import Board
 from const import ROWS, COLS, SQUARE_SIZE, COLORS
+from square import Square
 
 
 class Game:
@@ -15,9 +16,17 @@ class Game:
 
                 pygame.draw.rect(
                     surface,
-                    square.color,
+                    square.get_color('DEFAULT'),
                     (col * SQUARE_SIZE, row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE)
                 )
+
+                if square.has_border:
+                    pygame.draw.rect(
+                        surface,
+                        square.get_color('BORDER'),
+                        (col * SQUARE_SIZE, row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE),
+                        5
+                    )
 
                 if len(self.board.moves) > 1:
                     previous_move = self.board.moves[-2]
@@ -49,6 +58,6 @@ class Game:
 
                 if square.is_accented:
                     if square.is_empty():
-                        pygame.draw.circle(surface, square.get_color('HIGHLIGHT_ACCENT') if square.is_highlighted else square.get_color('ACCENT'), square.center, 20)
+                        pygame.draw.circle(surface, square.get_color('ACCENT'), square.center, 20)
                     else:
-                        pygame.draw.circle(surface, square.get_color('HIGHLIGHT_ACCENT') if square.is_highlighted else square.get_color('ACCENT'), square.center, SQUARE_SIZE // 2, 10)
+                        pygame.draw.circle(surface, square.get_color('ACCENT'), square.center, SQUARE_SIZE // 2, 10)
