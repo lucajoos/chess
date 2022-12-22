@@ -30,14 +30,13 @@ class Game:
 
                 if len(self.board.moves) > 1:
                     previous_move = self.board.moves[-2]
-                    previous_move.initial_square.color_reset()
-                    previous_move.target_square.color_reset()
+                    previous_move.initial_square.is_highlighted = False
+                    previous_move.initial_square.is_highlighted = False
 
                 if len(self.board.moves) > 0:
                     last_move = self.board.moves[-1]
-                    last_move.initial_square.highlight()
-                    last_move.target_square.highlight()
-
+                    last_move.initial_square.is_highlighted = True
+                    last_move.initial_square.is_highlighted = True
 
     def draw_pieces(self, surface):
         for row in range(ROWS):

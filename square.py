@@ -11,18 +11,12 @@ class Square:
         self.is_highlighted = False
         self.has_border = False
         self.center = (col * SQUARE_SIZE + SQUARE_SIZE // 2, row * SQUARE_SIZE + SQUARE_SIZE // 2)
-
-        self.color = None
-        self.color_reset()
+        self.color = self.get_color('DEFAULT')
 
     def get_color(self, name):
         return COLORS.get(
             f'SQUARE_{"DARK" if self.is_dark else "LIGHT"}{"_HIGHLIGHT" if self.is_highlighted else ""}_{name}'
         )
-
-    def color_reset(self):
-        self.is_accented = False
-        self.is_highlighted = False
 
     def highlight(self):
         self.is_highlighted = True

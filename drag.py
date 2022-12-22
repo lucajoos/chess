@@ -1,5 +1,6 @@
 import pygame
 
+from calculate import Calculate
 from const import SQUARE_SIZE
 from move import Move
 
@@ -25,7 +26,7 @@ class Drag:
     def focus(self, board, target_square, event):
         self.pos = event.pos
         self.is_dragging = True
-        self.possible_positions = board.calculate_possible_moves(target_square)
+        self.possible_positions = Calculate.possible_positions(board, target_square)
         self.initial_square = target_square
         self.hovering_square = target_square
 
@@ -36,7 +37,7 @@ class Drag:
 
     def blur(self, board):
         if self.initial_square is not None:
-            self.initial_square.color_reset()
+            self.initial_square.is_highlighted = False
 
         for (row, col) in self.possible_positions:
             board.squares[row][col].is_accented = False
@@ -51,6 +52,10 @@ class Drag:
             self.initial_square,
             target_square
         )
+
+        if not target_square.is_empty():
+            target_square.piece.is_captured = True
+            target_square.piece.is_visible = False
 
         self.initial_square.piece = None
         target_square.piece = piece
