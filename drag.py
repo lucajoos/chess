@@ -27,7 +27,7 @@ class Drag:
         self.possible_positions = board.calculate_possible_moves(target_square)
         self.initial_square = target_square
 
-        target_square.color_highlight()
+        target_square.highlight()
 
         for (row, col) in self.possible_positions:
             board.squares[row][col].is_accented = True

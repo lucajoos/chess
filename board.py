@@ -166,6 +166,14 @@ class Board:
             if piece.name == 'p':
                 possible_positions.append((row + piece.direction, col))
 
+                if col > 1:
+                    if not self.squares[row + piece.direction][col - 1].is_empty():
+                        possible_positions.append((row + piece.direction, col - 1))
+
+                if col < 7:
+                    if not self.squares[row + piece.direction][col + 1].is_empty():
+                        possible_positions.append((row + piece.direction, col + 1))
+
                 if not piece.was_moved:
                     possible_positions.append((row + piece.direction * 2, col))
 
@@ -200,8 +208,8 @@ class Board:
                     if target_square == square:
                         possible_positions.remove(position)
                     else:
-                        if target_piece is not None:
-                            if target_piece.color == square.piece.color or target_piece.name == 'k':
+                        if not target_square.is_empty():
+                            if target_piece.color == square.piece.color or target_piece.name == 'k' or (piece.name == 'p' and target_square.col == square.col):
                                 possible_positions.remove(position)
 
         return possible_positions

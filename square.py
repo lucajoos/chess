@@ -8,6 +8,7 @@ class Square:
         self.piece = piece
         self.is_dark = (self.row + self.col) % 2 == 0
         self.is_accented = False
+        self.is_highlighted = False
         self.center = (col * SQUARE_SIZE + SQUARE_SIZE // 2, row * SQUARE_SIZE + SQUARE_SIZE // 2)
 
         self.color = None
@@ -19,9 +20,12 @@ class Square:
         )
 
     def color_reset(self):
+        self.is_accented = False
+        self.is_highlighted = False
         self.color = self.get_color('DEFAULT')
 
-    def color_highlight(self):
+    def highlight(self):
+        self.is_highlighted = True
         self.color = self.get_color('HIGHLIGHT')
 
     def is_empty(self):
