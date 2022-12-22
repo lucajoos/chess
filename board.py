@@ -1,12 +1,18 @@
-from const import ROWS, COLS
+from const import ROWS, COLS, INITIAL_FEN
 from piece import Piece
 from square import Square
 
 
 class Board:
     def __init__(self):
+        self.squares = None
+        self.moves = None
+        self.reset()
+
+    def reset(self):
         self.squares = [[Square(row, col, None) for col in range(COLS)] for row in range(ROWS)]
-        self.load('pp2pp2/8/4q/8/8/PP2PP2/8/8 w KQkq - 0 1')
+        self.moves = []
+        self.load(INITIAL_FEN)
 
     def load(self, string):
         for group_index, group in enumerate(string.split(' ')):
@@ -22,73 +28,73 @@ class Board:
                                                                              'w' if position.isupper() else 'b')
                             col_index += 1
 
-    def calculate_straight_moves(self, square):
+    def calculate_straight_positions(self, square):
         piece = square.piece
         row = square.row
         col = square.col
 
-        possible_moves = []
+        possible_positions = []
 
         if row < 7:
             for i in range(row + 1, 8):
-                target_square = self.squares[i][col].piece
-                is_empty = target_square is None
+                target_piece = self.squares[i][col].piece
+                is_empty = target_piece is None
 
                 if not is_empty:
-                    if target_square == piece.color:
+                    if target_piece == piece.color or target_piece.name == 'k':
                         break
 
-                possible_moves.append((i, col))
+                possible_positions.append((i, col))
 
                 if not is_empty:
                     break
         if row > 0:
             for i in range(row - 1, -1, -1):
-                target_square = self.squares[i][col].piece
-                is_empty = target_square is None
+                target_piece = self.squares[i][col].piece
+                is_empty = target_piece is None
 
                 if not is_empty:
-                    if target_square == piece.color:
+                    if target_piece == piece.color or target_piece.name == 'k':
                         break
 
-                possible_moves.append((i, col))
+                possible_positions.append((i, col))
 
                 if not is_empty:
                     break
         if col < 7:
             for i in range(col + 1, 8):
-                target_square = self.squares[row][i].piece
-                is_empty = target_square is None
+                target_piece = self.squares[row][i].piece
+                is_empty = target_piece is None
 
                 if not is_empty:
-                    if target_square == piece.color:
+                    if target_piece == piece.color or target_piece.name == 'k':
                         break
 
-                possible_moves.append((row, i))
+                possible_positions.append((row, i))
 
                 if not is_empty:
                     break
         if col > 0:
             for i in range(col - 1, -1, -1):
-                target_square = self.squares[row][i].piece
-                is_empty = target_square is None
+                target_piece = self.squares[row][i].piece
+                is_empty = target_piece is None
 
                 if not is_empty:
-                    if target_square == piece.color:
+                    if target_piece == piece.color or target_piece.name == 'k':
                         break
 
-                possible_moves.append((row, i))
+                possible_positions.append((row, i))
 
                 if not is_empty:
                     break
-        return possible_moves
+        return possible_positions
 
-    def calculate_diagonal_moves(self, square):
+    def calculate_diagonal_positions(self, square):
         piece = square.piece
         row = square.row
         col = square.col
 
-        possible_moves = []
+        possible_positions = []
 
         if row < 7 and col < 7:
             for i in range(1, 8 - max(row, col)):
@@ -96,10 +102,10 @@ class Board:
                 is_empty = target_piece is None
 
                 if not is_empty:
-                    if target_piece.color == piece.color:
+                    if target_piece.color == piece.color or target_piece.name == 'k':
                         break
 
-                possible_moves.append((row + i, col + i))
+                possible_positions.append((row + i, col + i))
                 
                 if not is_empty:
                     break
@@ -109,10 +115,10 @@ class Board:
                 is_empty = target_piece is None
 
                 if not is_empty:
-                    if target_piece.color == piece.color:
+                    if target_piece.color == piece.color or target_piece.name == 'k':
                         break
 
-                possible_moves.append((row - i, col - i))
+                possible_positions.append((row - i, col - i))
 
                 if not is_empty:
                     break
@@ -122,10 +128,10 @@ class Board:
                 is_empty = target_piece is None
 
                 if not is_empty:
-                    if target_piece.color == piece.color:
+                    if target_piece.color == piece.color or target_piece.name == 'k':
                         break
 
-                possible_moves.append((row - i, col + i))
+                possible_positions.append((row - i, col + i))
 
                 if not is_empty:
                     break
@@ -135,32 +141,33 @@ class Board:
                 is_empty = target_piece is None
 
                 if not is_empty:
-                    if target_piece.color == piece.color:
+                    if target_piece.color == piece.color or target_piece.name == 'k':
                         break
 
-                possible_moves.append((row + i, col - i))
+                possible_positions.append((row + i, col - i))
 
                 if not is_empty:
                     break
 
-        return possible_moves
+        return possible_positions
 
     def calculate_possible_moves(self, square):
         piece = square.piece
         row = square.row
         col = square.col
 
+        possible_positions = []
         possible_moves = []
 
         if piece is not None:
             if piece.name == 'p':
-                possible_moves.append((row + piece.direction, col))
+                possible_positions.append((row + piece.direction, col))
 
                 if not piece.was_moved:
-                    possible_moves.append((row + piece.direction * 2, col))
+                    possible_positions.append((row + piece.direction * 2, col))
 
             elif piece.name == 'n':
-                possible_moves = [
+                possible_positions = [
                     (row + 1, col + 2),
                     (row + 2, col + 1),
                     (row - 1, col + 2),
@@ -172,25 +179,26 @@ class Board:
                 ]
 
             elif piece.name == 'b':
-                possible_moves = self.calculate_diagonal_moves(square)
+                possible_positions = self.calculate_diagonal_positions(square)
 
             elif piece.name == 'r':
-                possible_moves = self.calculate_straight_moves(square)
+                possible_positions = self.calculate_straight_positions(square)
 
             elif piece.name == 'q':
-                possible_moves = self.calculate_diagonal_moves(square) + self.calculate_straight_moves(square)
+                possible_positions = self.calculate_diagonal_positions(square) + self.calculate_straight_positions(square)
 
-            for index, move in enumerate(list(possible_moves)):
-                if not Square.in_range(move[0], move[1]):
-                    possible_moves.remove(move)
+            for index, position in enumerate(list(possible_positions)):
+                if not Square.in_range(position[0], position[1]):
+                    possible_positions.remove(position)
                 else:
-                    target_square = self.squares[move[0]][move[1]]
+                    target_square = self.squares[position[0]][position[1]]
+                    target_piece = target_square.piece
 
                     if target_square == square:
-                        possible_moves.remove(move)
+                        possible_positions.remove(position)
                     else:
-                        if target_square.piece is not None:
-                            if target_square.piece.color == square.piece.color:
-                                possible_moves.remove(move)
+                        if target_piece is not None:
+                            if target_piece.color == square.piece.color or target_piece.name == 'k':
+                                possible_positions.remove(position)
 
-        return possible_moves
+        return possible_positions
