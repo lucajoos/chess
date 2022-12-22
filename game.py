@@ -29,12 +29,6 @@ class Game:
                     last_move.initial_square.color_highlight()
                     last_move.target_square.color_highlight()
 
-                if square.is_accented:
-                    if square.is_empty():
-                        pygame.draw.circle(surface, square.get_color('ACCENT'), square.center, 20)
-                    else:
-                        pygame.draw.circle(surface, square.get_color('ACCENT'), square.center, SQUARE_SIZE // 2, 10)
-
     def draw_pieces(self, surface):
         for row in range(ROWS):
             for col in range(COLS):
@@ -46,3 +40,14 @@ class Game:
                         piece.img,
                         piece.img.get_rect(center=square.center)
                     )
+
+    def draw_square_accents(self, surface):
+        for row in range(ROWS):
+            for col in range(COLS):
+                square = self.board.squares[row][col]
+
+                if square.is_accented:
+                    if square.is_empty():
+                        pygame.draw.circle(surface, square.get_color('ACCENT'), square.center, 20)
+                    else:
+                        pygame.draw.circle(surface, square.get_color('ACCENT'), square.center, SQUARE_SIZE // 2, 10)

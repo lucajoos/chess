@@ -29,6 +29,7 @@ class Main:
 
         self.game.draw_squares(self.screen)
         self.game.draw_pieces(self.screen)
+        self.game.draw_square_accents(self.screen)
         self.drag.draw(self.screen)
 
         pygame.display.update()
