@@ -22,6 +22,66 @@ class Board:
                                                                              'w' if position.isupper() else 'b')
                             col_index += 1
 
+    def calculate_straight_moves(self, square):
+        piece = square.piece
+        row = square.row
+        col = square.col
+
+        possible_moves = []
+
+        if row < 7:
+            for i in range(row + 1, 8):
+                target_square = self.squares[i][col].piece
+                is_empty = target_square is None
+
+                if not is_empty:
+                    if target_square == piece.color:
+                        break
+
+                possible_moves.append((i, col))
+
+                if not is_empty:
+                    break
+        if row > 0:
+            for i in range(row - 1, -1, -1):
+                target_square = self.squares[i][col].piece
+                is_empty = target_square is None
+
+                if not is_empty:
+                    if target_square == piece.color:
+                        break
+
+                possible_moves.append((i, col))
+
+                if not is_empty:
+                    break
+        if col < 7:
+            for i in range(col + 1, 8):
+                target_square = self.squares[row][i].piece
+                is_empty = target_square is None
+
+                if not is_empty:
+                    if target_square == piece.color:
+                        break
+
+                possible_moves.append((row, i))
+
+                if not is_empty:
+                    break
+        if col > 0:
+            for i in range(col - 1, -1, -1):
+                target_square = self.squares[row][i].piece
+                is_empty = target_square is None
+
+                if not is_empty:
+                    if target_square == piece.color:
+                        break
+
+                possible_moves.append((row, i))
+
+                if not is_empty:
+                    break
+        return possible_moves
     def calculate_possible_moves(self, square):
         piece = square.piece
         row = square.row
@@ -48,15 +108,23 @@ class Board:
                     (row - 2, col - 1),
                 ]
 
+            if piece.name == 'b':
+                pass
+
+            if piece.name == 'r':
+                possible_moves = self.calculate_straight_moves(square)
+
             for index, move in enumerate(list(possible_moves)):
-                row, col = move
-                if not Square.in_range(row, col):
+                if not Square.in_range(move[0], move[1]):
                     possible_moves.remove(move)
                 else:
-                    target_square = self.squares[row][col]
+                    target_square = self.squares[move[0]][move[1]]
 
-                    if target_square.piece is not None:
-                        if target_square.piece.color == square.piece.color:
-                            possible_moves.remove(move)
+                    if target_square == square:
+                        possible_moves.remove(move)
+                    else:
+                        if target_square.piece is not None:
+                            if target_square.piece.color == square.piece.color:
+                                possible_moves.remove(move)
 
         return possible_moves
