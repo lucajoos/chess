@@ -1,4 +1,4 @@
-from const import COLORS
+from const import COLORS, SQUARE_SIZE
 
 
 class Square:
@@ -7,17 +7,25 @@ class Square:
         self.col = col
         self.piece = piece
         self.is_dark = (self.row + self.col) % 2 == 0
+        self.is_accented = False
+        self.center = (col * SQUARE_SIZE + SQUARE_SIZE // 2, row * SQUARE_SIZE + SQUARE_SIZE // 2)
 
         self.color = None
-        self.reset()
+        self.color_reset()
 
-    def reset(self):
-        self.color = COLORS.get('TILE_DARK_DEFAULT' if self.is_dark else 'TILE_LIGHT_DEFAULT')
-
-    def highlight(self):
-        self.color = COLORS.get(
-            'TILE_DARK_HIGHLIGHT' if self.is_dark else 'TILE_LIGHT_HIGHLIGHT'
+    def get_color(self, name):
+        return COLORS.get(
+            f'SQUARE_DARK_{name}' if self.is_dark else f'SQUARE_LIGHT_{name}'
         )
+
+    def color_reset(self):
+        self.color = self.get_color('DEFAULT')
+
+    def color_highlight(self):
+        self.color = self.get_color('HIGHLIGHT')
+
+    def is_empty(self):
+        return self.piece is None
 
     @staticmethod
     def in_range(*args):

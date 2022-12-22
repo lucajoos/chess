@@ -1,7 +1,7 @@
 import pygame
 import sys
 
-from const import HEIGHT, WIDTH, TILE_SIZE
+from const import HEIGHT, WIDTH, SQUARE_SIZE
 from drag import Drag
 from game import Game
 
@@ -27,7 +27,7 @@ class Main:
                 pygame.quit()
                 sys.exit()
 
-        self.game.draw_tiles(self.screen)
+        self.game.draw_squares(self.screen)
         self.game.draw_pieces(self.screen)
         self.drag.draw(self.screen)
 

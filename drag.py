@@ -1,6 +1,6 @@
 import pygame
 
-from const import TILE_SIZE
+from const import SQUARE_SIZE
 from move import Move
 
 
@@ -11,13 +11,13 @@ class Drag:
         self.initial_square = None
         self.pos = (0, 0)
 
-    def draw(self, screen):
+    def draw(self, surface):
         if self.is_dragging:
-            screen.blit(self.initial_square.piece.img, self.initial_square.piece.img.get_rect(center=self.pos))
+            surface.blit(self.initial_square.piece.img, self.initial_square.piece.img.get_rect(center=self.pos))
 
     def handle(self, board, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
-            square = board.squares[event.pos[1] // TILE_SIZE][event.pos[0] // TILE_SIZE]
+            square = board.squares[event.pos[1] // SQUARE_SIZE][event.pos[0] // SQUARE_SIZE]
 
             if square.piece is not None:
                 self.possible_positions = board.calculate_possible_moves(square)
@@ -29,7 +29,8 @@ class Drag:
                 self.is_dragging = True
 
                 for (row, col) in self.possible_positions:
-                    board.squares[row][col].color = '#C84646'
+                    board.squares[row][col].is_accented = True
+
         if event.type == pygame.MOUSEMOTION and self.is_dragging:
             self.pos = event.pos
         if event.type == pygame.MOUSEBUTTONUP and self.is_dragging:
@@ -37,9 +38,9 @@ class Drag:
             self.initial_square.piece.is_visible = True
 
             for (row, col) in self.possible_positions:
-                board.squares[row][col].reset()
+                board.squares[row][col].is_accented = False
 
-            target_square = board.squares[event.pos[1] // TILE_SIZE][event.pos[0] // TILE_SIZE]
+            target_square = board.squares[event.pos[1] // SQUARE_SIZE][event.pos[0] // SQUARE_SIZE]
             target_row = target_square.row
             target_col = target_square.col
 
