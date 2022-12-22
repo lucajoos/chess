@@ -1,6 +1,6 @@
 import pygame
 
-from const import SQUARE_SIZE
+from const import TILE_SIZE
 from move import Move
 
 
@@ -17,7 +17,7 @@ class Drag:
 
     def handle(self, board, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
-            square = board.squares[event.pos[1] // SQUARE_SIZE][event.pos[0] // SQUARE_SIZE]
+            square = board.squares[event.pos[1] // TILE_SIZE][event.pos[0] // TILE_SIZE]
 
             if square.piece is not None:
                 self.possible_positions = board.calculate_possible_moves(square)
@@ -37,9 +37,9 @@ class Drag:
             self.initial_square.piece.is_visible = True
 
             for (row, col) in self.possible_positions:
-                board.squares[row][col].reset_color()
+                board.squares[row][col].reset()
 
-            target_square = board.squares[event.pos[1] // SQUARE_SIZE][event.pos[0] // SQUARE_SIZE]
+            target_square = board.squares[event.pos[1] // TILE_SIZE][event.pos[0] // TILE_SIZE]
             target_row = target_square.row
             target_col = target_square.col
 
@@ -47,8 +47,8 @@ class Drag:
                 if (target_row, target_col) in self.possible_positions:
                     piece = self.initial_square.piece
                     move = Move(
-                        (self.initial_square.row, self.initial_square.col),
-                        (target_row, target_col)
+                        self.initial_square,
+                        target_square
                     )
 
                     piece.move(move)

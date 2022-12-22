@@ -3,7 +3,7 @@ HEIGHT = 800
 
 ROWS = 8
 COLS = 8
-SQUARE_SIZE = WIDTH // COLS
+TILE_SIZE = WIDTH // COLS
 
 INITIAL_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
 
@@ -14,4 +14,13 @@ PIECE_VALUES = {
     'r': 5.0,
     'q': 9.0,
     'k': 10000.0
+}
+
+COLORS = {
+    'TILE_LIGHT_DEFAULT': '#EEEED2',
+    'TILE_DARK_DEFAULT': '#759656',
+    'TILE_LIGHT_ACCENT': '#D6D6BD',
+    'TILE_DARK_ACCENT': '#69874E',
+    'TILE_LIGHT_HIGHLIGHT': '#F6F686',
+    'TILE_DARK_HIGHLIGHT': '#BACB41',
 }
