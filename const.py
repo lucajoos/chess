@@ -7,7 +7,7 @@ ROWS = 8
 COLS = 8
 SQUARE_SIZE = WIDTH // COLS
 
-DEFAULT_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
+DEFAULT_FEN = '8/7k/6b1/b4q2/6P1/4P3/2K5/5B2 w - - 0 1'
 
 PIECE_VALUES = {
     'p': 1.0,

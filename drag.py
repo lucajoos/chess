@@ -37,19 +37,6 @@ class Drag:
 
         target_square.highlight()
 
-        if Calculate.is_check(board, board.active_color):
-            for possible_position in list(self.possible_positions):
-                hypothetical_board = Board()
-                hypothetical_board.load(board.save())
-
-                hypothetical_board.move(Move(
-                    hypothetical_board.squares[self.initial_square.row][self.initial_square.col],
-                    hypothetical_board.squares[possible_position[0]][possible_position[1]]
-                ))
-
-                if Calculate.is_check(hypothetical_board, hypothetical_board.active_color):
-                    self.possible_positions.remove(possible_position)
-
         for (row, col) in self.possible_positions:
             board.squares[row][col].is_accented = True
 

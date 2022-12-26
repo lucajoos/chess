@@ -236,6 +236,21 @@ class Calculate:
 
                     if possible_position in Calculate.threat_map(hypothetical_board, board.active_color):
                         possible_positions.remove(possible_position)
+
+        if not is_calculating_threat_map:
+            if Calculate.is_check(board, board.active_color):
+                for possible_position in list(possible_positions):
+                    hypothetical_board = Board()
+                    hypothetical_board.load(board.save())
+
+                    hypothetical_board.move(Move(
+                        hypothetical_board.squares[square.row][square.col],
+                        hypothetical_board.squares[possible_position[0]][possible_position[1]]
+                    ))
+
+                    if Calculate.is_check(hypothetical_board, hypothetical_board.active_color):
+                        possible_positions.remove(possible_position)
+
         return possible_positions
 
     @staticmethod
