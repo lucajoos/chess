@@ -1,7 +1,7 @@
 import pygame
 
 from board import Board
-from calculate import Calculate
+import calculate
 from const import SQUARE_SIZE, ROWS, COLS, ENVIRONMENT
 from move import Move
 
@@ -26,12 +26,12 @@ class Drag:
 
     def focus(self, board, target_square, event):
         if ENVIRONMENT == 'development':
-            for position in Calculate.threat_map(board, 'w' if board.active_color == 'b' else 'b'):
+            for position in calculate.threat_map(board, 'w' if board.active_color == 'b' else 'b'):
                 board.squares[position[0]][position[1]].is_threat = True
 
         self.pos = event.pos
         self.is_dragging = True
-        self.possible_positions = Calculate.possible_positions(board, target_square)
+        self.possible_positions = calculate.possible_positions(board, target_square)
         self.initial_square = target_square
         self.hovering_square = target_square
 
