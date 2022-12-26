@@ -4,6 +4,7 @@ import sys
 from const import BOARD_HEIGHT, BOARD_WIDTH, SQUARE_SIZE, MENU_HEIGHT
 from drag import Drag
 from game import Game
+from menu import Menu
 
 
 class Main:
@@ -13,6 +14,7 @@ class Main:
         self.screen = pygame.display.set_mode((BOARD_WIDTH, BOARD_HEIGHT + MENU_HEIGHT))
         self.game = Game()
         self.drag = Drag()
+        self.menu = Menu()
 
         pygame.display.set_caption('Chess')
         while True:
@@ -26,6 +28,7 @@ class Main:
                 pygame.quit()
                 sys.exit()
 
+        self.menu.draw(self.screen)
         self.game.draw_squares(self.screen)
         self.game.draw_pieces(self.screen)
         self.game.draw_square_accents(self.screen)

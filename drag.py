@@ -68,42 +68,44 @@ class Drag:
     def handle(self, board, event):
         if board.result is None:
             if event.type == pygame.MOUSEBUTTONDOWN:
-                target_position = ((event.pos[1] - MENU_HEIGHT) // SQUARE_SIZE, event.pos[0] // SQUARE_SIZE)
-                target_square = board.squares[target_position[0]][target_position[1]]
+                if event.pos[1] > MENU_HEIGHT:
+                    target_position = ((event.pos[1] - MENU_HEIGHT) // SQUARE_SIZE, event.pos[0] // SQUARE_SIZE)
+                    target_square = board.squares[target_position[0]][target_position[1]]
 
-                if not target_square.is_empty():
-                    if target_square.piece.color == board.active_color:
-                        target_square.piece.is_visible = False
+                    if not target_square.is_empty():
+                        if target_square.piece.color == board.active_color:
+                            target_square.piece.is_visible = False
 
-                        if self.initial_square is not None:
-                            previous_square = self.initial_square
+                            if self.initial_square is not None:
+                                previous_square = self.initial_square
 
-                            self.blur(board)
+                                self.blur(board)
 
-                            if previous_square != target_square:
-                                self.focus(board, target_square, event)
-                                self.initial_square = target_square
+                                if previous_square != target_square:
+                                    self.focus(board, target_square, event)
+                                    self.initial_square = target_square
+                                else:
+                                    target_square.piece.is_visible = True
                             else:
-                                target_square.piece.is_visible = True
-                        else:
-                            self.focus(board, target_square, event)
-                elif self.initial_square is not None:
-                    if target_position in self.possible_positions:
-                        self.move(board, target_square)
+                                self.focus(board, target_square, event)
+                    elif self.initial_square is not None:
+                        if target_position in self.possible_positions:
+                            self.move(board, target_square)
 
-                    self.blur(board)
+                        self.blur(board)
 
             if event.type == pygame.MOUSEMOTION and self.is_dragging:
-                self.pos = event.pos
+                if event.pos[1] > MENU_HEIGHT:
+                    self.pos = event.pos
 
-                if self.hovering_square is not None:
-                    self.hovering_square.has_border = False
+                    if self.hovering_square is not None:
+                        self.hovering_square.has_border = False
 
-                target_position = ((event.pos[1] - MENU_HEIGHT) // SQUARE_SIZE, event.pos[0] // SQUARE_SIZE)
-                target_square = board.squares[target_position[0]][target_position[1]]
-                target_square.has_border = True
+                    target_position = ((event.pos[1] - MENU_HEIGHT) // SQUARE_SIZE, event.pos[0] // SQUARE_SIZE)
+                    target_square = board.squares[target_position[0]][target_position[1]]
+                    target_square.has_border = True
 
-                self.hovering_square = target_square
+                    self.hovering_square = target_square
 
             if event.type == pygame.MOUSEBUTTONUP:
                 target_position = ((event.pos[1] - MENU_HEIGHT) // SQUARE_SIZE, event.pos[0] // SQUARE_SIZE)
@@ -120,6 +122,6 @@ class Drag:
                     if not self.initial_square.is_empty():
                         self.initial_square.piece.is_visible = True
 
-                if target_square != self.initial_square and target_position in self.possible_positions:
+                if target_square != self.initial_square and target_position in self.possible_positions and event.pos[1] > MENU_HEIGHT:
                     self.move(board, target_square)
                     self.blur(board)
