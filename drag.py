@@ -1,6 +1,7 @@
 import pygame
 
 import calculate
+import sound
 from const import SQUARE_SIZE, BOARD_ROWS, BOARD_COLS, ENVIRONMENT, MENU_HEIGHT
 from move import Move
 
@@ -56,6 +57,8 @@ class Drag:
     def move(self, board, target_square):
         piece = self.initial_square.piece
         piece.is_visible = True
+
+        sound.play('move' if target_square.is_empty() else 'capture')
 
         board.move(Move(
             self.initial_square,

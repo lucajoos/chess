@@ -10,7 +10,6 @@ class Game:
         self.board = Board()
         self.board.load(DEFAULT_FEN)
         self.board.validate()
-
     def draw_squares(self, surface):
         for row in range(BOARD_ROWS):
             for col in range(BOARD_COLS):
@@ -22,13 +21,7 @@ class Game:
                     (col * SQUARE_SIZE, row * SQUARE_SIZE + MENU_HEIGHT, SQUARE_SIZE + MENU_HEIGHT, SQUARE_SIZE)
                 )
 
-                if square.has_border:
-                    pygame.draw.rect(
-                        surface,
-                        square.get_color('BORDER'),
-                        (col * SQUARE_SIZE, row * SQUARE_SIZE + MENU_HEIGHT, SQUARE_SIZE, SQUARE_SIZE),
-                        5
-                    )
+
 
                 if len(self.board.moves) > 1:
                     previous_move = self.board.moves[-2]
@@ -39,6 +32,19 @@ class Game:
                     last_move = self.board.moves[-1]
                     last_move.initial_square.is_highlighted = True
                     last_move.initial_square.is_highlighted = True
+
+    def draw_square_borders(self, surface):
+        for row in range(BOARD_ROWS):
+            for col in range(BOARD_COLS):
+                square = self.board.squares[row][col]
+
+                if square.has_border:
+                    pygame.draw.rect(
+                        surface,
+                        square.get_color('BORDER'),
+                        (col * SQUARE_SIZE, row * SQUARE_SIZE + MENU_HEIGHT, SQUARE_SIZE, SQUARE_SIZE),
+                        5
+                    )
 
     def draw_pieces(self, surface):
         for row in range(BOARD_ROWS):

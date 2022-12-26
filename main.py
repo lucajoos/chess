@@ -30,8 +30,9 @@ class Main:
 
         self.menu.draw(self.screen)
         self.game.draw_squares(self.screen)
-        self.game.draw_pieces(self.screen)
         self.game.draw_square_accents(self.screen)
+        self.game.draw_square_borders(self.screen)
+        self.game.draw_pieces(self.screen)
         self.drag.draw(self.screen)
 
         if self.game.board.active_color is not None:
