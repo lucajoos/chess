@@ -68,7 +68,6 @@ class Drag:
     def handle(self, board, event):
         if board.result is None:
             if event.type == pygame.MOUSEBUTTONDOWN:
-                print(event.pos[1])
                 target_position = ((event.pos[1] - MENU_HEIGHT) // SQUARE_SIZE, event.pos[0] // SQUARE_SIZE)
                 target_square = board.squares[target_position[0]][target_position[1]]
 
