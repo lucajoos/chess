@@ -13,13 +13,12 @@ class Piece:
         self.direction = -1 if color == 'w' else 1
         self.value = -1 * self.direction * PIECE_VALUES.get(name)
         self.moves = [Move(None, initial_square)]
-        self.was_moved = False
         self.is_captured = False
         self.img = None
         self.is_visible = True
 
         self.set_texture()
 
-    def set_texture(self, size=80):
-        self.img = pygame.image.load(os.path.join(f'assets/images/{size}px/{self.color}_{self.name}.png'))
+    def set_texture(self):
+        self.img = pygame.image.load(os.path.join(f'assets/images/{self.color}_{self.name}.svg'))
 

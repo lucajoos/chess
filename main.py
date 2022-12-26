@@ -1,7 +1,7 @@
 import pygame
 import sys
 
-from const import HEIGHT, WIDTH, SQUARE_SIZE
+from const import BOARD_HEIGHT, BOARD_WIDTH, SQUARE_SIZE, MENU_HEIGHT
 from drag import Drag
 from game import Game
 
@@ -10,7 +10,7 @@ class Main:
     def __init__(self):
         pygame.init()
 
-        self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
+        self.screen = pygame.display.set_mode((BOARD_WIDTH, BOARD_HEIGHT + MENU_HEIGHT))
         self.game = Game()
         self.drag = Drag()
 
@@ -30,6 +30,10 @@ class Main:
         self.game.draw_pieces(self.screen)
         self.game.draw_square_accents(self.screen)
         self.drag.draw(self.screen)
+
+        if self.game.board.active_color is not None:
+            # TODO: draw result
+            pass
 
         pygame.display.update()
 

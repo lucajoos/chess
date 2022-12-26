@@ -158,7 +158,7 @@ def possible_positions(board, square, is_calculating_threat_map=False):
                 if not board.squares[row + piece.direction][col + 1].is_empty() or is_calculating_threat_map:
                     positions.append((row + piece.direction, col + 1))
 
-            if not piece.was_moved:
+            if (row == 1 and piece.color == 'b') or (row == 6 and piece.color == 'w'):
                 positions.append((row + piece.direction * 2, col))
 
         elif piece.name == 'n':
@@ -229,7 +229,7 @@ def possible_positions(board, square, is_calculating_threat_map=False):
                     hypothetical_board.squares[possible_position[0]][possible_position[1]]
                 ))
 
-                if possible_position in threat_map(hypothetical_board, board.active_color):
+                if is_check(hypothetical_board, hypothetical_board.active_color):
                     positions.remove(possible_position)
 
     if not is_calculating_threat_map:
@@ -260,3 +260,14 @@ def is_check(board, color):
                 return True
 
     return False
+
+
+def is_stalemate(board, color):
+    positions = []
+
+    for piece in board.pieces:
+        if piece.color == color:
+            positions += possible_positions(board, piece.moves[-1].target_square)
+
+    return len(set(positions)) == 0
+

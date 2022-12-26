@@ -1,4 +1,4 @@
-from const import COLORS, SQUARE_SIZE
+from const import COLORS, SQUARE_SIZE, MENU_HEIGHT
 
 
 class Square:
@@ -6,12 +6,12 @@ class Square:
         self.row = row
         self.col = col
         self.piece = piece
-        self.is_dark = (self.row + self.col) % 2 == 0
+        self.is_dark = (self.row + self.col) % 2 == 1
         self.is_accented = False
         self.is_highlighted = False
         self.is_threat = False
         self.has_border = False
-        self.center = (col * SQUARE_SIZE + SQUARE_SIZE // 2, row * SQUARE_SIZE + SQUARE_SIZE // 2)
+        self.center = (col * SQUARE_SIZE + SQUARE_SIZE // 2, row * SQUARE_SIZE + SQUARE_SIZE // 2 + MENU_HEIGHT)
         self.color = self.get_color('DEFAULT')
 
     def get_color(self, name):
