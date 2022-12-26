@@ -1,7 +1,8 @@
 import pygame
 
+from board import Board
 from calculate import Calculate
-from const import SQUARE_SIZE
+from const import SQUARE_SIZE, ROWS, COLS, ENVIRONMENT
 from move import Move
 
 
@@ -24,6 +25,10 @@ class Drag:
             surface.blit(self.initial_square.piece.img, self.initial_square.piece.img.get_rect(center=self.pos))
 
     def focus(self, board, target_square, event):
+        if ENVIRONMENT == 'development':
+            for position in Calculate.threat_map(board, 'w' if board.active_color == 'b' else 'b'):
+                board.squares[position[0]][position[1]].is_threat = True
+
         self.pos = event.pos
         self.is_dragging = True
         self.possible_positions = Calculate.possible_positions(board, target_square)
@@ -32,10 +37,28 @@ class Drag:
 
         target_square.highlight()
 
+        if Calculate.is_check(board, board.active_color):
+            for possible_position in list(self.possible_positions):
+                hypothetical_board = Board()
+                hypothetical_board.load(board.save())
+
+                hypothetical_board.move(Move(
+                    hypothetical_board.squares[self.initial_square.row][self.initial_square.col],
+                    hypothetical_board.squares[possible_position[0]][possible_position[1]]
+                ))
+
+                if Calculate.is_check(hypothetical_board, hypothetical_board.active_color):
+                    self.possible_positions.remove(possible_position)
+
         for (row, col) in self.possible_positions:
             board.squares[row][col].is_accented = True
 
     def blur(self, board):
+        if ENVIRONMENT == 'development':
+            for row in range(ROWS):
+                for col in range(COLS):
+                    board.squares[row][col].is_threat = False
+
         if self.initial_square is not None:
             self.initial_square.is_highlighted = False
 
@@ -48,22 +71,12 @@ class Drag:
         piece = self.initial_square.piece
         piece.is_visible = True
 
-        move = Move(
+        board.move(Move(
             self.initial_square,
             target_square
-        )
+        ))
 
-        if not target_square.is_empty():
-            target_square.piece.is_captured = True
-            target_square.piece.is_visible = False
-
-        self.initial_square.piece = None
-        target_square.piece = piece
-
-        piece.move(move)
-        board.moves.append(move)
-
-        board.active = 'b' if board.active == 'w' else 'w'
+        board.active_color = 'b' if board.active_color == 'w' else 'w'
 
     def handle(self, board, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -71,7 +84,7 @@ class Drag:
             target_square = board.squares[target_position[0]][target_position[1]]
 
             if not target_square.is_empty():
-                if target_square.piece.color == board.active:
+                if target_square.piece.color == board.active_color:
                     target_square.piece.is_visible = False
 
                     if self.initial_square is not None:

@@ -1,13 +1,14 @@
 import pygame.draw
 
 from board import Board
-from const import ROWS, COLS, SQUARE_SIZE, COLORS
+from const import ROWS, COLS, SQUARE_SIZE, COLORS, DEFAULT_FEN
 from square import Square
 
 
 class Game:
     def __init__(self):
         self.board = Board()
+        self.board.load(DEFAULT_FEN)
 
     def draw_squares(self, surface):
         for row in range(ROWS):
@@ -16,7 +17,7 @@ class Game:
 
                 pygame.draw.rect(
                     surface,
-                    square.get_color('DEFAULT'),
+                    square.get_color('THREAT' if square.is_threat else 'DEFAULT'),
                     (col * SQUARE_SIZE, row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE)
                 )
 

@@ -23,8 +23,3 @@ class Piece:
     def set_texture(self, size=80):
         self.img = pygame.image.load(os.path.join(f'assets/images/{size}px/{self.color}_{self.name}.png'))
 
-    def move(self, move):
-        self.moves.append(move)
-
-        if not self.was_moved:
-            self.was_moved = True

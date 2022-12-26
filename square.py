@@ -9,6 +9,7 @@ class Square:
         self.is_dark = (self.row + self.col) % 2 == 0
         self.is_accented = False
         self.is_highlighted = False
+        self.is_threat = False
         self.has_border = False
         self.center = (col * SQUARE_SIZE + SQUARE_SIZE // 2, row * SQUARE_SIZE + SQUARE_SIZE // 2)
         self.color = self.get_color('DEFAULT')
