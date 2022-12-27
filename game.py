@@ -10,6 +10,7 @@ class Game:
         self.board = Board()
         self.board.load(DEFAULT_FEN)
         self.board.validate()
+
     def draw_squares(self, surface):
         for row in range(BOARD_ROWS):
             for col in range(BOARD_COLS):
@@ -20,8 +21,6 @@ class Game:
                     square.get_color('THREAT' if square.is_threat else 'DEFAULT'),
                     (col * SQUARE_SIZE, row * SQUARE_SIZE + MENU_HEIGHT, SQUARE_SIZE + MENU_HEIGHT, SQUARE_SIZE)
                 )
-
-
 
                 if len(self.board.moves) > 1:
                     previous_move = self.board.moves[-2]
@@ -68,3 +67,18 @@ class Game:
                         pygame.draw.circle(surface, square.get_color('ACCENT'), square.center, SQUARE_SIZE // 5)
                     else:
                         pygame.draw.circle(surface, square.get_color('ACCENT'), square.center, SQUARE_SIZE // 2, 10)
+
+    def draw_board_labels(self, surface, font):
+        for row in range(BOARD_ROWS):
+            for col in range(BOARD_COLS):
+                if col == 0 or row == BOARD_ROWS - 1:
+                    square = self.board.squares[row][col]
+
+                    if col == 0:
+                        anchor = tuple(map(sum, zip(square.top_left_corner, (5, 5))))
+                        img = font.render(str(row + 1), True, square.get_inverted_color('DEFAULT'))
+                        surface.blit(img, img.get_rect(topleft=anchor))
+                    if row == BOARD_ROWS - 1:
+                        anchor = tuple(map(sum, zip(square.bottom_right_corner, (-5, -5))))
+                        img = font.render(chr(104 - col), True, square.get_inverted_color('DEFAULT'))
+                        surface.blit(img, img.get_rect(bottomright=anchor))

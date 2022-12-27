@@ -1,3 +1,5 @@
+import pygame
+
 ENVIRONMENT = 'production'
 
 BOARD_WIDTH = 600

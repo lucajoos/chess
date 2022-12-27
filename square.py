@@ -12,11 +12,18 @@ class Square:
         self.is_threat = False
         self.has_border = False
         self.center = (col * SQUARE_SIZE + SQUARE_SIZE // 2, row * SQUARE_SIZE + SQUARE_SIZE // 2 + MENU_HEIGHT)
+        self.bottom_right_corner = (col * SQUARE_SIZE + SQUARE_SIZE, row * SQUARE_SIZE + SQUARE_SIZE + MENU_HEIGHT)
+        self.top_left_corner = (col * SQUARE_SIZE, row * SQUARE_SIZE + MENU_HEIGHT)
         self.color = self.get_color('DEFAULT')
 
     def get_color(self, name):
         return COLORS.get(
             f'SQUARE_{"DARK" if self.is_dark else "LIGHT"}{"_HIGHLIGHT" if self.is_highlighted else ""}_{name}'
+        )
+
+    def get_inverted_color(self, name):
+        return COLORS.get(
+            f'SQUARE_{"LIGHT" if self.is_dark else "DARK"}{"_HIGHLIGHT" if self.is_highlighted else ""}_{name}'
         )
 
     def highlight(self):

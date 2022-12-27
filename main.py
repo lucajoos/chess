@@ -15,6 +15,7 @@ class Main:
         self.game = Game()
         self.drag = Drag()
         self.menu = Menu()
+        self.font = pygame.font.SysFont(None, 24)
 
         pygame.display.set_caption('Chess')
         while True:
@@ -30,6 +31,7 @@ class Main:
 
         self.menu.draw(self.screen)
         self.game.draw_squares(self.screen)
+        self.game.draw_board_labels(self.screen, self.font)
         self.game.draw_square_accents(self.screen)
         self.game.draw_square_borders(self.screen)
         self.game.draw_pieces(self.screen)
