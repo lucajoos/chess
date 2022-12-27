@@ -60,10 +60,15 @@ class Drag:
 
         sound.play('move' if target_square.is_empty() else 'capture')
 
+        if len(board.moves) > 0:
+            board.moves[-1].target_square.is_highlighted = False
+
         board.move(Move(
             self.initial_square,
             target_square
         ))
+
+        target_square.is_highlighted = True
 
         board.active_color = 'b' if board.active_color == 'w' else 'w'
         board.validate()
