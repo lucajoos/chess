@@ -2,7 +2,6 @@ import pygame.draw
 
 from board import Board
 from const import BOARD_ROWS, BOARD_COLS, SQUARE_SIZE, COLORS, DEFAULT_FEN, MENU_HEIGHT
-from square import Square
 
 
 class Game:
