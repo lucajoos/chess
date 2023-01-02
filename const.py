@@ -15,6 +15,8 @@ SQUARE_SIZE = BOARD_WIDTH // BOARD_COLS
 
 DEFAULT_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
 
+PIECES = ['p', 'n', 'b', 'r', 'q', 'k']
+
 PIECE_VALUES = {
     'p': 1.0,
     'n': 3.0,

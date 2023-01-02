@@ -9,6 +9,26 @@ class Board:
         self.squares = None
         self.moves = None
         self.pieces = []
+
+        self.captures = {
+            'b': {
+                'p': [],
+                'n': [],
+                'b': [],
+                'r': [],
+                'q': [],
+                'k': []
+            },
+            'w': {
+                'p': [],
+                'n': [],
+                'b': [],
+                'r': [],
+                'q': [],
+                'k': []
+            }
+        }
+
         self.active_color = 'w'
         self.is_inverted = False
         self.result = None
@@ -18,6 +38,25 @@ class Board:
         self.result = None
         self.squares = [[Square(row, col, None) for col in range(BOARD_COLS)] for row in range(BOARD_ROWS)]
         self.moves = []
+
+        self.captures = {
+            'b': {
+                'p': [],
+                'n': [],
+                'b': [],
+                'r': [],
+                'q': [],
+                'k': []
+            },
+            'w': {
+                'p': [],
+                'n': [],
+                'b': [],
+                'r': [],
+                'q': [],
+                'k': []
+            }
+        }
 
     def validate(self):
         is_check = calculate.is_check(self, 'w' if self.active_color == 'b' else 'b')
@@ -35,6 +74,9 @@ class Board:
             piece = move.initial_square.piece
 
             if not move.target_square.is_empty():
+                target_piece = move.target_square.piece
+                self.captures.get(piece.color).get(target_piece.name).append(target_piece)
+
                 move.target_square.piece.is_captured = True
                 move.target_square.piece.is_visible = False
 

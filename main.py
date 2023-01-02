@@ -33,7 +33,7 @@ class Main:
                 pygame.quit()
                 sys.exit()
 
-        self.menu.draw(self.screen)
+        self.menu.draw(self.screen, self.game.board)
         self.game.draw_squares(self.screen)
         self.game.draw_board_labels(self.screen, self.font_regular)
         self.game.draw_square_accents(self.screen)
