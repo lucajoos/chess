@@ -75,10 +75,10 @@ class Game:
                     square = self.board.squares[row][col]
 
                     if col == 0:
-                        anchor = tuple(map(sum, zip(square.top_left_corner, (5, 5))))
-                        img = font.render(str(row + 1), True, square.get_inverted_color('DEFAULT'))
+                        anchor = tuple(map(sum, zip(square.top_left_corner, (3, 3))))
+                        img = font.render(str(row + 1 if self.board.is_inverted else 8 - row), True, square.get_inverted_color('DEFAULT'))
                         surface.blit(img, img.get_rect(topleft=anchor))
                     if row == BOARD_ROWS - 1:
-                        anchor = tuple(map(sum, zip(square.bottom_right_corner, (-5, -5))))
-                        img = font.render(chr(104 - col), True, square.get_inverted_color('DEFAULT'))
+                        anchor = tuple(map(sum, zip(square.bottom_right_corner, (-3, -3))))
+                        img = font.render(chr(104 - col if self.board.is_inverted else col + 97), True, square.get_inverted_color('DEFAULT'))
                         surface.blit(img, img.get_rect(bottomright=anchor))

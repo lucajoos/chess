@@ -2,7 +2,7 @@ import pygame
 
 import calculate
 import sound
-from const import SQUARE_SIZE, BOARD_ROWS, BOARD_COLS, ENVIRONMENT, MENU_HEIGHT
+from const import SQUARE_SIZE, BOARD_ROWS, BOARD_COLS, ENVIRONMENT, MENU_HEIGHT, SCREEN_HEIGHT
 from move import Move
 
 
@@ -76,7 +76,7 @@ class Drag:
     def handle(self, board, event):
         if board.result is None:
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if event.pos[1] > MENU_HEIGHT:
+                if event.pos[1] > MENU_HEIGHT and SCREEN_HEIGHT - event.pos[1] > MENU_HEIGHT:
                     target_position = ((event.pos[1] - MENU_HEIGHT) // SQUARE_SIZE, event.pos[0] // SQUARE_SIZE)
                     target_square = board.squares[target_position[0]][target_position[1]]
 
@@ -103,7 +103,7 @@ class Drag:
                         self.blur(board)
 
             if event.type == pygame.MOUSEMOTION and self.is_dragging:
-                if event.pos[1] > MENU_HEIGHT:
+                if event.pos[1] > MENU_HEIGHT and SCREEN_HEIGHT - event.pos[1] > MENU_HEIGHT:
                     self.pos = event.pos
 
                     if self.hovering_square is not None:
@@ -116,9 +116,6 @@ class Drag:
                     self.hovering_square = target_square
 
             if event.type == pygame.MOUSEBUTTONUP:
-                target_position = ((event.pos[1] - MENU_HEIGHT) // SQUARE_SIZE, event.pos[0] // SQUARE_SIZE)
-                target_square = board.squares[target_position[0]][target_position[1]]
-
                 if self.hovering_square is not None:
                     self.hovering_square.has_border = False
 
@@ -130,6 +127,10 @@ class Drag:
                     if not self.initial_square.is_empty():
                         self.initial_square.piece.is_visible = True
 
-                if target_square != self.initial_square and target_position in self.possible_positions and event.pos[1] > MENU_HEIGHT:
-                    self.move(board, target_square)
-                    self.blur(board)
+                if event.pos[1] > MENU_HEIGHT and SCREEN_HEIGHT - event.pos[1] > MENU_HEIGHT:
+                    target_position = ((event.pos[1] - MENU_HEIGHT) // SQUARE_SIZE, event.pos[0] // SQUARE_SIZE)
+                    target_square = board.squares[target_position[0]][target_position[1]]
+
+                    if target_square != self.initial_square and target_position in self.possible_positions:
+                        self.move(board, target_square)
+                        self.blur(board)

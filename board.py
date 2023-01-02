@@ -10,6 +10,7 @@ class Board:
         self.moves = None
         self.pieces = []
         self.active_color = 'w'
+        self.is_inverted = False
         self.result = None
         self.reset()
 
@@ -40,6 +41,12 @@ class Board:
             move.initial_square.piece = None
             move.target_square.piece = piece
 
+            if \
+                    (move.target_square.row == 0 and piece.color == 'w') or \
+                    (move.target_square.row == 7 and piece.color == 'b'):
+                # TODO: promotion
+                pass
+
             self.moves.append(move)
             piece.moves.append(move)
 
@@ -61,7 +68,6 @@ class Board:
             elif group_index == 1:
                 self.active_color = group
         # TODO: IMPORT COMPLETE FEN
-
 
     def save(self):
         row_string = ''
@@ -94,4 +100,3 @@ class Board:
         # TODO: EXPORT COMPLETE FEN
         row_string += ' KQkq - 0 1'
         return row_string
-

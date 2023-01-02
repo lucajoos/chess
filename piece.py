@@ -20,5 +20,5 @@ class Piece:
         self.set_texture()
 
     def set_texture(self):
-        self.img = pygame.image.load(os.path.join(f'assets/images/{self.color}_{self.name}.svg'))
+        self.img = pygame.transform.smoothscale(pygame.image.load(os.path.join(f'assets/images/pieces/{self.color}_{self.name}.png')), (75, 75))
 

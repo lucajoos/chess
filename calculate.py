@@ -150,11 +150,11 @@ def possible_positions(board, square, is_calculating_threat_map=False):
             if not is_calculating_threat_map:
                 positions.append((row + piece.direction, col))
 
-            if col > 1:
+            if col > 1 and row + piece.direction < 8:
                 if not board.squares[row + piece.direction][col - 1].is_empty() or is_calculating_threat_map:
                     positions.append((row + piece.direction, col - 1))
 
-            if col < 7:
+            if col < 7 and row + piece.direction < 8:
                 if not board.squares[row + piece.direction][col + 1].is_empty() or is_calculating_threat_map:
                     positions.append((row + piece.direction, col + 1))
 
