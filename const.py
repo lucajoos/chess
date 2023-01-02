@@ -1,5 +1,3 @@
-import pygame
-
 ENVIRONMENT = 'production'
 
 BOARD_WIDTH = 600
@@ -47,5 +45,8 @@ COLORS = {
     'SQUARE_LIGHT_HIGHLIGHT_THREAT': '#EE7F6B',
     'SQUARE_DARK_HIGHLIGHT_THREAT': '#D66D52',
 
-    'MENU': '#302E2B'
+    'MENU': '#302E2B',
+
+    'FONT_PRIMARY': '#FFFFFF',
+    'FONT_SECONDARY': '#FFFFFF7F'
 }

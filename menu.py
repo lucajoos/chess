@@ -1,3 +1,5 @@
+import math
+
 import pygame.draw
 
 from const import COLORS, BOARD_WIDTH, MENU_HEIGHT, BOARD_HEIGHT, PIECES
@@ -11,10 +13,10 @@ class Menu:
         )
 
         self.title = (
-            font.render('Black', True, '#FFFFFF'),
-            font.render('White', True, '#FFFFFF'),
+            font.render('Black', True, COLORS.get('FONT_PRIMARY')),
+            font.render('White', True, COLORS.get('FONT_PRIMARY')),
         )
-    def draw(self, surface, board):
+    def draw(self, surface, board, font):
         pygame.draw.rect(surface, COLORS.get('MENU'), (0, 0, BOARD_WIDTH, MENU_HEIGHT))
         pygame.draw.rect(surface, COLORS.get('MENU'), (0, BOARD_HEIGHT + MENU_HEIGHT, BOARD_WIDTH, MENU_HEIGHT))
         surface.blit(self.avatars[0], self.avatars[0].get_rect(center=(20 * 2, MENU_HEIGHT // 2)))
@@ -22,31 +24,45 @@ class Menu:
         surface.blit(self.title[0], self.title[0].get_rect(topleft=(70, ((MENU_HEIGHT - 45) // 2 + 3))))
         surface.blit(self.title[1], self.title[1].get_rect(topleft=(70, BOARD_HEIGHT + MENU_HEIGHT + ((MENU_HEIGHT - 45) // 2 + 3))))
 
-        group_count = 0
-        piece_count = 0
+        black_group_count = 0
+        black_piece_count = 0
+        black_score = 0
 
         for piece_category in PIECES:
             pieces = board.captures.get('b').get(piece_category)
             for (index, piece) in enumerate(pieces):
+                black_score += piece.value
                 img = pygame.transform.smoothscale(piece.img, (25, 25))
-                surface.blit(img, img.get_rect(topleft=(65 + (index + piece_count) * 7 + group_count * 13, (MENU_HEIGHT // 2 - 3))))
+                surface.blit(img, img.get_rect(
+                    topleft=(65 + (index + black_piece_count) * 7 + black_group_count * 13, (MENU_HEIGHT // 2 - 3))))
 
-            piece_count += len(pieces)
+            black_piece_count += len(pieces)
 
             if len(pieces) > 0:
-                group_count += 1
+                black_group_count += 1
 
-        group_count = 0
-        piece_count = 0
+        white_group_count = 0
+        white_piece_count = 0
+        white_score = 0
 
         for piece_category in PIECES:
             pieces = board.captures.get('w').get(piece_category)
             for (index, piece) in enumerate(pieces):
+                white_score += piece.value
                 img = pygame.transform.smoothscale(piece.img, (25, 25))
                 surface.blit(img, img.get_rect(
-                    topleft=(65 + (index + piece_count) * 7 + group_count * 13, MENU_HEIGHT + BOARD_HEIGHT + (MENU_HEIGHT // 2 - 3))))
+                    topleft=(65 + (index + white_piece_count) * 7 + white_group_count * 13, MENU_HEIGHT + BOARD_HEIGHT + (MENU_HEIGHT // 2 - 3))))
 
-            piece_count += len(pieces)
+            white_piece_count += len(pieces)
 
             if len(pieces) > 0:
-                group_count += 1
+                white_group_count += 1
+
+        if black_score > white_score:
+            img = font.render(f'+{math.floor(black_score - white_score)}', True, COLORS.get('FONT_SECONDARY'))
+            surface.blit(img, img.get_rect(
+                topleft=(70 + black_piece_count * 7 + black_group_count * 13, MENU_HEIGHT // 2 + 3)))
+        elif white_score > black_score:
+            img = font.render(f'+{math.floor(black_score - white_score)}', True, COLORS.get('FONT_SECONDARY'))
+            surface.blit(img, img.get_rect(
+                topleft=(70 + white_piece_count * 7 + white_group_count * 13, MENU_HEIGHT + BOARD_HEIGHT + MENU_HEIGHT // 2 + 3)))

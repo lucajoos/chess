@@ -11,7 +11,7 @@ class Piece:
         self.name = name
         self.color = color
         self.direction = -1 if color == 'w' else 1
-        self.value = -1 * self.direction * PIECE_VALUES.get(name)
+        self.value = PIECE_VALUES.get(name)
         self.moves = [Move(None, initial_square)]
         self.is_captured = False
         self.img = None
