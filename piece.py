@@ -22,3 +22,5 @@ class Piece:
     def set_texture(self):
         self.img = pygame.transform.smoothscale(pygame.image.load(os.path.join(f'assets/images/pieces/{self.color}_{self.name}.png')), (75, 75))
 
+    def replace_initial_square(self, square):
+        self.moves = [Move(None, square)]

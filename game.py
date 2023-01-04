@@ -2,6 +2,7 @@ import pygame.draw
 
 from board import Board
 from const import BOARD_ROWS, BOARD_COLS, SQUARE_SIZE, COLORS, DEFAULT_FEN, MENU_HEIGHT, ENVIRONMENT
+from piece import Piece
 
 
 class Game:
@@ -18,7 +19,7 @@ class Game:
                 pygame.draw.rect(
                     surface,
                     square.get_color('THREAT' if square.is_threat else 'DEFAULT'),
-                    (col * SQUARE_SIZE, row * SQUARE_SIZE + MENU_HEIGHT, SQUARE_SIZE + MENU_HEIGHT, SQUARE_SIZE)
+                    (col * SQUARE_SIZE, row * SQUARE_SIZE + MENU_HEIGHT, SQUARE_SIZE, SQUARE_SIZE)
                 )
 
                 if len(self.board.moves) > 1:

@@ -77,7 +77,7 @@ class Menu:
             surface.blit(img, img.get_rect(
                 topleft=(70 + white_piece_count * 7 + white_group_count * 13, MENU_HEIGHT + BOARD_HEIGHT + MENU_HEIGHT // 2 + 3)))
 
-        hovering = None
+        hovering_option = None
 
         for event in events:
             if event.type == pygame.MOUSEMOTION:
@@ -91,28 +91,28 @@ class Menu:
             is_hovering = rect_bg.collidepoint(self.pos[0], self.pos[1])
 
             if is_hovering:
-                hovering = option
+                hovering_option = option
 
             pygame.draw.rect(surface, COLORS.get('FONT_LIGHT') if is_hovering else COLORS.get('FONT_SECONDARY'), rect_bg, 0, 3)
             surface.blit(img, rect)
 
-        if hovering is not None and self.cursor == pygame.SYSTEM_CURSOR_ARROW:
+        if hovering_option is not None and self.cursor == pygame.SYSTEM_CURSOR_ARROW:
             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
             self.cursor = pygame.SYSTEM_CURSOR_HAND
-        elif hovering is None and self.cursor == pygame.SYSTEM_CURSOR_HAND:
+        elif hovering_option is None and self.cursor == pygame.SYSTEM_CURSOR_HAND:
             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
             self.cursor = pygame.SYSTEM_CURSOR_ARROW
 
         for event in events:
-            if event.type == pygame.MOUSEBUTTONUP and hovering is not None:
-                if hovering == 'download':
+            if event.type == pygame.MOUSEBUTTONUP and hovering_option is not None:
+                if hovering_option == 'download':
                     fen = board.save()
 
                     if ENVIRONMENT == 'development':
                         print(fen)
                     else:
                         dialog.save(fen)
-                if hovering == 'upload':
+                if hovering_option == 'upload':
                     filename = dialog.load()
 
                     if filename is not None:
@@ -121,7 +121,7 @@ class Menu:
                         board.load(fen)
                         board.evaluation = board.evaluate()
                         sound.play('game-start')
-                if hovering == 'refresh':
+                if hovering_option == 'refresh':
                     board.reset()
                     board.load(DEFAULT_FEN)
                     board.evaluation = board.evaluate()

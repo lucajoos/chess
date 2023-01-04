@@ -96,7 +96,6 @@ class Drag:
             invalid_positions = calculate.threat_map(board, 'w' if board.active_color == 'b' else 'b')
 
             is_allowed = True
-
             possibility = 'q' if col == 4 else 'k'
 
             if piece.color == 'w':
@@ -124,8 +123,6 @@ class Drag:
                     is_castling = True
 
             is_allowed = True
-            potential_rook = board.squares[row][7].piece
-
             possibility = 'q' if possibility.lower() == 'k' else 'k'
 
             if piece.color == 'w':
@@ -160,29 +157,38 @@ class Drag:
             target_square
         ))
 
-        evaluation = board.evaluate()
-
-        if ENVIRONMENT == 'development':
-            print(evaluation)
-
         target_square.is_highlighted = True
         board.active_color = 'b' if board.active_color == 'w' else 'w'
 
-        if evaluation.get('result') is not None:
-            sound.play('game-end')
-        elif evaluation.get('is_check'):
-            sound.play('move-check')
-        elif is_castling:
-            sound.play('castle')
+        if \
+            (
+                (target_square.row == 0 and piece.color == 'w') or
+                (target_square.row == 7 and piece.color == 'b')
+            ) and \
+                piece.name == 'p':
+            board.promotion_square = target_square
         else:
-            sound.play(
-                ('move-self' if board.active_color == 'w' else 'move-opponent')
-                if (is_target_square_empty and not is_en_passant) else 'capture'
-            )
+            evaluation = board.evaluate()
+            board.evaluation = evaluation
+
+            if ENVIRONMENT == 'development':
+                print(evaluation)
+
+            if evaluation.get('result') is not None:
+                sound.play('game-end')
+            elif evaluation.get('is_check'):
+                sound.play('move-check')
+            elif is_castling:
+                sound.play('castle')
+            else:
+                sound.play(
+                    ('move-self' if board.active_color == 'w' else 'move-opponent')
+                    if (is_target_square_empty and not is_en_passant) else 'capture'
+                )
 
 
     def handle(self, board, event):
-        if board.evaluation.get('result') is None:
+        if board.evaluation.get('result') is None and board.promotion_square is None:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.pos[1] > MENU_HEIGHT and SCREEN_HEIGHT - event.pos[1] > MENU_HEIGHT:
                     target_position = ((event.pos[1] - MENU_HEIGHT) // SQUARE_SIZE, event.pos[0] // SQUARE_SIZE)

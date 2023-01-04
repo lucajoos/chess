@@ -14,6 +14,7 @@ class Board:
         self.en_passant_target_square = None
         self.active_color = 'w'
         self.is_inverted = False
+        self.promotion_square = None
 
         self.evaluation = {
             'is_check': False,
@@ -51,6 +52,7 @@ class Board:
         self.en_passant_target_square = None
         self.active_color = 'w'
         self.is_inverted = False
+        self.promotion_square = None
 
         self.evaluation = {
             'is_check': False,
@@ -112,12 +114,6 @@ class Board:
 
             move.initial_square.piece = None
             move.target_square.piece = piece
-
-            if \
-                    (move.target_square.row == 0 and piece.color == 'w') or \
-                    (move.target_square.row == 7 and piece.color == 'b'):
-                # TODO: promotion
-                pass
 
             self.moves.append(move)
             piece.moves.append(move)
