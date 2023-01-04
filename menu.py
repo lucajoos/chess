@@ -4,7 +4,7 @@ import pygame.draw
 
 import dialog
 import sound
-from const import COLORS, BOARD_WIDTH, MENU_HEIGHT, BOARD_HEIGHT, PIECES, DEFAULT_FEN
+from const import COLORS, BOARD_WIDTH, MENU_HEIGHT, BOARD_HEIGHT, PIECES, DEFAULT_FEN, ENVIRONMENT
 
 
 class Menu:
@@ -106,7 +106,12 @@ class Menu:
         for event in events:
             if event.type == pygame.MOUSEBUTTONUP and hovering is not None:
                 if hovering == 'download':
-                    dialog.save(board.save())
+                    fen = board.save()
+
+                    if ENVIRONMENT == 'development':
+                        print(fen)
+                    else:
+                        dialog.save(fen)
                 if hovering == 'upload':
                     filename = dialog.load()
 

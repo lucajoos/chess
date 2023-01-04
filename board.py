@@ -1,6 +1,7 @@
 import calculate
 import sound
 from const import BOARD_ROWS, BOARD_COLS, DEFAULT_FEN
+from move import Move
 from piece import Piece
 from square import Square
 
@@ -10,6 +11,9 @@ class Board:
         self.squares = None
         self.moves = None
         self.pieces = []
+        self.en_passant_target_square = None
+        self.active_color = 'w'
+        self.is_inverted = False
 
         self.evaluation = {
             'is_check': False,
@@ -39,14 +43,14 @@ class Board:
 
         self.castling = ['K', 'Q', 'k', 'q']
 
-        self.active_color = 'w'
-        self.is_inverted = False
-
         self.reset()
 
     def reset(self):
         self.squares = [[Square(row, col, None) for col in range(BOARD_COLS)] for row in range(BOARD_ROWS)]
         self.moves = []
+        self.en_passant_target_square = None
+        self.active_color = 'w'
+        self.is_inverted = False
 
         self.evaluation = {
             'is_check': False,
@@ -137,6 +141,27 @@ class Board:
                 self.active_color = group
             elif group_index == 2:
                 self.castling = '-' if group == '-' else list(group)
+            elif group_index == 3:
+                self.en_passant_target_square = None if group == '-' else Square.get_square_from_algebraic_notation(self, group)
+
+                if self.en_passant_target_square is not None:
+                    en_passant_row = self.en_passant_target_square.row
+                    en_passant_col = self.en_passant_target_square.col
+                    opposite_color = 'w' if self.active_color == 'b' else 'b'
+                    opposite_direction = -1 if opposite_color == 'w' else 1
+
+                    previous_target_square = self.squares[en_passant_row + opposite_direction][en_passant_col]
+                    previous_initial_square = self.squares[en_passant_row - opposite_direction][en_passant_col]
+
+                    if not previous_target_square.is_empty():
+                        if previous_target_square.piece.name == 'p' and previous_target_square.piece.color == opposite_color:
+                            previous_move = Move(
+                                previous_initial_square,
+                                previous_target_square
+                            )
+
+                            previous_target_square.piece.moves.append(previous_move)
+                            self.moves.append(previous_move)
 
     def save(self):
         row_string = ''
@@ -164,9 +189,9 @@ class Board:
             if row_index < BOARD_ROWS - 1:
                 row_string += '/'
 
-        row_string += f' {self.active_color}'
+        row_string += f' {self.active_color} '
         row_string += ' '.join(self.castling) if len(self.castling) > 0 else '-'
 
-        # TODO: EXPORT COMPLETE FEN
-        row_string += ' - 0 1'
+        row_string += f' {"-" if self.en_passant_target_square is None else Square.square_to_algebraic_notation(self, self.en_passant_target_square)}'
+        row_string += ' 0 1'
         return row_string

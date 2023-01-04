@@ -1,7 +1,7 @@
 import pygame.draw
 
 from board import Board
-from const import BOARD_ROWS, BOARD_COLS, SQUARE_SIZE, COLORS, DEFAULT_FEN, MENU_HEIGHT
+from const import BOARD_ROWS, BOARD_COLS, SQUARE_SIZE, COLORS, DEFAULT_FEN, MENU_HEIGHT, ENVIRONMENT
 
 
 class Game:
@@ -22,14 +22,14 @@ class Game:
                 )
 
                 if len(self.board.moves) > 1:
-                    previous_move = self.board.moves[-2]
-                    previous_move.initial_square.is_highlighted = False
-                    previous_move.initial_square.is_highlighted = False
+                    last_move = self.board.moves[-2]
+                    last_move.initial_square.is_highlighted = False
+                    last_move.target_square.is_highlighted = False
 
                 if len(self.board.moves) > 0:
                     last_move = self.board.moves[-1]
                     last_move.initial_square.is_highlighted = True
-                    last_move.initial_square.is_highlighted = True
+                    last_move.target_square.is_highlighted = True
 
     def draw_square_borders(self, surface):
         for row in range(BOARD_ROWS):
@@ -75,9 +75,9 @@ class Game:
 
                     if col == 0:
                         anchor = tuple(map(sum, zip(square.top_left_corner, (3, 3))))
-                        img = font.render(str(row + 1 if self.board.is_inverted else 8 - row), True, square.get_inverted_color('DEFAULT'))
+                        img = font.render(str(row) if ENVIRONMENT == 'development' else str(row + 1 if self.board.is_inverted else 8 - row), True, square.get_inverted_color('DEFAULT'))
                         surface.blit(img, img.get_rect(topleft=anchor))
                     if row == BOARD_ROWS - 1:
                         anchor = tuple(map(sum, zip(square.bottom_right_corner, (-3, -3))))
-                        img = font.render(chr(104 - col if self.board.is_inverted else col + 97), True, square.get_inverted_color('DEFAULT'))
+                        img = font.render(str(col) if ENVIRONMENT == 'development' else chr(104 - col if self.board.is_inverted else col + 97), True, square.get_inverted_color('DEFAULT'))
                         surface.blit(img, img.get_rect(bottomright=anchor))

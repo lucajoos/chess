@@ -4,6 +4,7 @@ import calculate
 import sound
 from const import SQUARE_SIZE, BOARD_ROWS, BOARD_COLS, ENVIRONMENT, MENU_HEIGHT, SCREEN_HEIGHT
 from move import Move
+from square import Square
 
 
 class Drag:
@@ -64,6 +65,11 @@ class Drag:
         row = self.initial_square.row
         col = self.initial_square.col
 
+        if piece.name == 'p' and abs(self.initial_square.row - target_square.row) == 2:
+            board.en_passant_target_square = board.squares[row + piece.direction][col]
+        else:
+            board.en_passant_target_square = None
+
         if len(board.moves) > 0:
             previous_move = board.moves[-1]
             previous_move_row_delta = abs(previous_move.initial_square.row - previous_move.target_square.row)
@@ -90,7 +96,6 @@ class Drag:
             invalid_positions = calculate.threat_map(board, 'w' if board.active_color == 'b' else 'b')
 
             is_allowed = True
-            potential_rook = board.squares[row][0].piece
 
             possibility = 'q' if col == 4 else 'k'
 
@@ -102,20 +107,21 @@ class Drag:
                         not board.squares[row][current_col].is_empty() or \
                         (row, current_col) in invalid_positions:
                     is_allowed = False
-
-            if \
-                    is_allowed and \
-                    potential_rook.name == 'r' and \
-                    len(potential_rook.moves) < 2 and \
-                    possibility in board.castling and \
-                    target_square.row == row and \
-                    target_square.col == 1:
-                board.move(Move(
-                    board.squares[row][0],
-                    board.squares[row][2]
-                ))
-                board.castling.remove(possibility)
-                is_castling = True
+            if not board.squares[row][0].is_empty():
+                potential_rook = board.squares[row][0].piece
+                if \
+                        is_allowed and \
+                        potential_rook.name == 'r' and \
+                        len(potential_rook.moves) < 2 and \
+                        possibility in board.castling and \
+                        target_square.row == row and \
+                        target_square.col == 1:
+                    board.move(Move(
+                        board.squares[row][0],
+                        board.squares[row][2]
+                    ))
+                    board.castling.remove(possibility)
+                    is_castling = True
 
             is_allowed = True
             potential_rook = board.squares[row][7].piece
@@ -130,20 +136,21 @@ class Drag:
                         not board.squares[row][current_col].is_empty() or \
                         (row, current_col) in invalid_positions:
                     is_allowed = False
-
-            if \
-                    is_allowed and \
-                    potential_rook.name == 'r' and \
-                    len(potential_rook.moves) < 2 and \
-                    possibility in board.castling and \
-                    target_square.row == row and \
-                    target_square.col == 6:
-                board.move(Move(
-                    board.squares[row][7],
-                    board.squares[row][5]
-                ))
-                board.castling.remove(possibility)
-                is_castling = True
+            if not board.squares[row][0].is_empty():
+                potential_rook = board.squares[row][0].piece
+                if \
+                        is_allowed and \
+                        potential_rook.name == 'r' and \
+                        len(potential_rook.moves) < 2 and \
+                        possibility in board.castling and \
+                        target_square.row == row and \
+                        target_square.col == 6:
+                    board.move(Move(
+                        board.squares[row][7],
+                        board.squares[row][5]
+                    ))
+                    board.castling.remove(possibility)
+                    is_castling = True
 
         if len(board.moves) > 0:
             board.moves[-1].target_square.is_highlighted = False

@@ -217,7 +217,6 @@ def possible_positions(board, square, is_calculating_threat_map=False):
 
                 if len(piece.moves) < 2 and not board.evaluation.get('is_check'):
                     is_allowed = True
-                    potential_rook = board.squares[row][0].piece
 
                     possibility = 'q' if col == 4 else 'k'
 
@@ -230,15 +229,16 @@ def possible_positions(board, square, is_calculating_threat_map=False):
                                 (row, current_col) in invalid_positions:
                             is_allowed = False
 
-                    if \
-                            is_allowed and \
-                            potential_rook.name == 'r' and \
-                            len(potential_rook.moves) < 2 and \
-                            possibility in board.castling:
-                        positions.append((row, 1))
+                    if not board.squares[row][0].is_empty():
+                        potential_rook = board.squares[row][0].piece
+                        if \
+                                is_allowed and \
+                                potential_rook.name == 'r' and \
+                                len(potential_rook.moves) < 2 and \
+                                possibility in board.castling:
+                            positions.append((row, 1))
 
                     is_allowed = True
-                    potential_rook = board.squares[row][7].piece
 
                     possibility = 'q' if possibility.lower() == 'k' else 'k'
 
@@ -250,13 +250,15 @@ def possible_positions(board, square, is_calculating_threat_map=False):
                                 not board.squares[row][current_col].is_empty() or \
                                 (row, current_col) in invalid_positions:
                             is_allowed = False
+                    if not board.squares[row][0].is_empty():
+                        potential_rook = board.squares[row][0].piece
 
-                    if \
-                            is_allowed and \
-                            potential_rook.name == 'r' and \
-                            len(potential_rook.moves) < 2 and \
-                            possibility in board.castling:
-                        positions.append((row, 6))
+                        if \
+                                is_allowed and \
+                                potential_rook.name == 'r' and \
+                                len(potential_rook.moves) < 2 and \
+                                possibility in board.castling:
+                            positions.append((row, 6))
 
         for position in list(positions):
             if not Square.in_range(position[0], position[1]):
