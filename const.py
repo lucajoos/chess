@@ -11,7 +11,8 @@ BOARD_ROWS = 8
 BOARD_COLS = 8
 SQUARE_SIZE = BOARD_WIDTH // BOARD_COLS
 
-DEFAULT_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
+STARTING_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
+DEFAULT_FEN = STARTING_FEN
 
 PIECES = ['p', 'n', 'b', 'r', 'q', 'k']
 

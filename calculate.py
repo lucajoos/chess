@@ -150,13 +150,25 @@ def possible_positions(board, square, is_calculating_threat_map=False):
             if not is_calculating_threat_map:
                 positions.append((row + piece.direction, col))
 
-            if col > 1 and row + piece.direction < 8:
+            if col > 1 and 8 > row + piece.direction > 0:
                 if not board.squares[row + piece.direction][col - 1].is_empty() or is_calculating_threat_map:
                     positions.append((row + piece.direction, col - 1))
 
-            if col < 7 and row + piece.direction < 8:
+            if col < 7 and 8 > row + piece.direction > 0:
                 if not board.squares[row + piece.direction][col + 1].is_empty() or is_calculating_threat_map:
                     positions.append((row + piece.direction, col + 1))
+
+            if len(board.moves) > 0:
+                previous_move = board.moves[-1]
+                previous_move_row_delta = abs(previous_move.initial_square.row - previous_move.target_square.row)
+                previous_move_distance = (previous_move.target_square.row - row, previous_move.target_square.col - col)
+
+                if \
+                        previous_move_row_delta == 2 and \
+                        abs(previous_move_distance[0]) == 0 and \
+                        abs(previous_move_distance[1]) == 1 and \
+                        previous_move.target_square.piece.name == 'p':
+                    positions.append((row + piece.direction, col + previous_move_distance[1]))
 
             if (row == 1 and piece.color == 'b') or (row == 6 and piece.color == 'w'):
                 positions.append((row + piece.direction * 2, col))

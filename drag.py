@@ -58,6 +58,32 @@ class Drag:
         piece = self.initial_square.piece
         piece.is_visible = True
         is_target_square_empty = target_square.is_empty()
+        is_en_passant = False
+
+        if len(board.moves) > 0:
+            row = self.initial_square.row
+            col = self.initial_square.col
+
+            previous_move = board.moves[-1]
+            previous_move_row_delta = abs(previous_move.initial_square.row - previous_move.target_square.row)
+            previous_move_distance = (previous_move.target_square.row - row, previous_move.target_square.col - col)
+
+            if \
+                    previous_move_row_delta == 2 and \
+                    abs(previous_move_distance[0]) == 0 and \
+                    abs(previous_move_distance[1]) == 1 and \
+                    previous_move.target_square.piece.name == 'p' and \
+                    piece.name == 'p':
+                if target_square.row == row + piece.direction and target_square.col == col + previous_move_distance[1]:
+                    is_en_passant = True
+                    en_passant_square = previous_move.target_square
+                    en_passant_piece = en_passant_square.piece
+
+                    board.captures.get(piece.color).get(en_passant_piece.name).append(en_passant_piece)
+
+                    en_passant_piece.is_captured = True
+                    en_passant_piece.is_visible = False
+                    en_passant_square.piece = None
 
         if len(board.moves) > 0:
             board.moves[-1].target_square.is_highlighted = False
@@ -82,7 +108,7 @@ class Drag:
         else:
             sound.play(
                 ('move-self' if board.active_color == 'w' else 'move-opponent')
-                if is_target_square_empty else 'capture'
+                if (is_target_square_empty and not is_en_passant) else 'capture'
             )
 
 
