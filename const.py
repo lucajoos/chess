@@ -48,5 +48,6 @@ COLORS = {
     'MENU': '#302E2B',
 
     'FONT_PRIMARY': '#FFFFFF',
-    'FONT_SECONDARY': '#FFFFFF7F'
+    'FONT_SECONDARY': '#474542',
+    'FONT_ACCENT': '#66625d'
 }

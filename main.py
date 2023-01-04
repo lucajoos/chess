@@ -27,14 +27,15 @@ class Main:
             self.loop()
 
     def loop(self):
-        for event in pygame.event.get():
+        events = pygame.event.get()
+        for event in events:
             self.drag.handle(self.game.board, event)
 
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
 
-        self.menu.draw(self.screen, self.game.board, self.font_regular_small)
+        self.menu.draw(self.screen, events, self.font_regular_small, self.game.board)
         self.game.draw_squares(self.screen)
         self.game.draw_board_labels(self.screen, self.font_bold_medium)
         self.game.draw_square_accents(self.screen)
