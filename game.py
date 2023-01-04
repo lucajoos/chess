@@ -8,7 +8,7 @@ class Game:
     def __init__(self):
         self.board = Board()
         self.board.load(DEFAULT_FEN)
-        self.board.validate()
+        self.board.evaluation = self.board.evaluate()
 
     def draw_squares(self, surface):
         for row in range(BOARD_ROWS):

@@ -49,5 +49,6 @@ COLORS = {
 
     'FONT_PRIMARY': '#FFFFFF',
     'FONT_SECONDARY': '#474542',
-    'FONT_ACCENT': '#66625d'
+    'FONT_LIGHT': '#989795',
+    'FONT_DARK': '#1D1C1A'
 }

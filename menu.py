@@ -3,6 +3,7 @@ import math
 import pygame.draw
 
 import dialog
+import sound
 from const import COLORS, BOARD_WIDTH, MENU_HEIGHT, BOARD_HEIGHT, PIECES, DEFAULT_FEN
 
 
@@ -68,11 +69,11 @@ class Menu:
                 white_group_count += 1
 
         if black_score > white_score:
-            img = font.render(f'+{abs(math.floor(black_score - white_score))}', True, COLORS.get('FONT_ACCENT'))
+            img = font.render(f'+{abs(math.floor(black_score - white_score))}', True, COLORS.get('FONT_LIGHT'))
             surface.blit(img, img.get_rect(
                 topleft=(70 + black_piece_count * 7 + black_group_count * 13, MENU_HEIGHT // 2 + 3)))
         elif white_score > black_score:
-            img = font.render(f'+{abs(math.floor(black_score - white_score))}', True, COLORS.get('FONT_ACCENT'))
+            img = font.render(f'+{abs(math.floor(black_score - white_score))}', True, COLORS.get('FONT_LIGHT'))
             surface.blit(img, img.get_rect(
                 topleft=(70 + white_piece_count * 7 + white_group_count * 13, MENU_HEIGHT + BOARD_HEIGHT + MENU_HEIGHT // 2 + 3)))
 
@@ -92,7 +93,7 @@ class Menu:
             if is_hovering:
                 hovering = option
 
-            pygame.draw.rect(surface, COLORS.get('FONT_ACCENT') if is_hovering else COLORS.get('FONT_SECONDARY'), rect_bg, 0, 3)
+            pygame.draw.rect(surface, COLORS.get('FONT_LIGHT') if is_hovering else COLORS.get('FONT_SECONDARY'), rect_bg, 0, 3)
             surface.blit(img, rect)
 
         if hovering is not None and self.cursor == pygame.SYSTEM_CURSOR_ARROW:
@@ -113,6 +114,10 @@ class Menu:
                         file = open(filename, 'r')
                         fen = file.read()
                         board.load(fen)
+                        board.evaluation = board.evaluate()
+                        sound.play('game-start')
                 if hovering == 'refresh':
                     board.reset()
                     board.load(DEFAULT_FEN)
+                    board.evaluation = board.evaluate()
+                    sound.play('game-start')

@@ -1,4 +1,5 @@
 import calculate
+import sound
 from const import BOARD_ROWS, BOARD_COLS, DEFAULT_FEN
 from piece import Piece
 from square import Square
@@ -31,11 +32,11 @@ class Board:
 
         self.active_color = 'w'
         self.is_inverted = False
-        self.result = None
+        self.evaluation = None
         self.reset()
 
     def reset(self):
-        self.result = None
+        self.evaluation = None
         self.squares = [[Square(row, col, None) for col in range(BOARD_COLS)] for row in range(BOARD_ROWS)]
         self.moves = []
 
@@ -58,16 +59,24 @@ class Board:
             }
         }
 
-    def validate(self):
+    def evaluate(self):
         is_check = calculate.is_check(self, 'w' if self.active_color == 'b' else 'b')
         is_stalemate = calculate.is_stalemate(self, self.active_color)
         is_checkmate = is_check and is_stalemate
+        result = None
 
         if is_checkmate:
-            self.result = self.active_color
+            result = self.active_color
 
         elif is_stalemate:
-            self.result = 'n'
+            result = 'n'
+
+        return {
+            'is_check': is_check,
+            'is_stalemate': is_stalemate,
+            'is_checkmate': is_check and is_stalemate,
+            'result': result
+        }
 
     def move(self, move):
         if not move.initial_square.is_empty():

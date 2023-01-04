@@ -3,7 +3,7 @@ import os
 import pygame
 import sys
 
-from const import BOARD_HEIGHT, BOARD_WIDTH, SQUARE_SIZE, MENU_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT
+from const import BOARD_HEIGHT, BOARD_WIDTH, SQUARE_SIZE, MENU_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT, ENVIRONMENT
 from drag import Drag
 from game import Game
 from menu import Menu
@@ -22,7 +22,7 @@ class Main:
         self.drag = Drag()
         self.menu = Menu(self.font_bold_small)
 
-        pygame.display.set_caption('Chess')
+        pygame.display.set_caption(f'Chess{" [DEVELOPMENT]" if ENVIRONMENT == "development" else ""}')
         while True:
             self.loop()
 
