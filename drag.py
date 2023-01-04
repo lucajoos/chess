@@ -57,6 +57,7 @@ class Drag:
     def move(self, board, target_square):
         piece = self.initial_square.piece
         piece.is_visible = True
+        is_target_square_empty = target_square.is_empty()
 
         if len(board.moves) > 0:
             board.moves[-1].target_square.is_highlighted = False
@@ -81,7 +82,8 @@ class Drag:
         else:
             sound.play(
                 ('move-self' if board.active_color == 'w' else 'move-opponent')
-                if target_square.is_empty() else 'capture')
+                if is_target_square_empty else 'capture'
+            )
 
 
     def handle(self, board, event):
