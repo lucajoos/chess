@@ -11,6 +11,13 @@ class Board:
         self.moves = None
         self.pieces = []
 
+        self.evaluation = {
+            'is_check': False,
+            'is_stalemate': False,
+            'is_checkmate': False,
+            'result': None
+        }
+
         self.captures = {
             'b': {
                 'p': [],
@@ -29,16 +36,24 @@ class Board:
                 'k': []
             }
         }
+
+        self.castling = ['K', 'Q', 'k', 'q']
 
         self.active_color = 'w'
         self.is_inverted = False
-        self.evaluation = None
+
         self.reset()
 
     def reset(self):
-        self.evaluation = None
         self.squares = [[Square(row, col, None) for col in range(BOARD_COLS)] for row in range(BOARD_ROWS)]
         self.moves = []
+
+        self.evaluation = {
+            'is_check': False,
+            'is_stalemate': False,
+            'is_checkmate': False,
+            'result': None
+        }
 
         self.captures = {
             'b': {
@@ -58,6 +73,8 @@ class Board:
                 'k': []
             }
         }
+
+        self.castling = ['K', 'Q', 'k', 'q']
 
     def evaluate(self):
         is_check = calculate.is_check(self, 'w' if self.active_color == 'b' else 'b')
@@ -118,7 +135,8 @@ class Board:
                             col_index += 1
             elif group_index == 1:
                 self.active_color = group
-        # TODO: IMPORT COMPLETE FEN
+            elif group_index == 2:
+                self.castling = '-' if group == '-' else list(group)
 
     def save(self):
         row_string = ''
@@ -147,7 +165,8 @@ class Board:
                 row_string += '/'
 
         row_string += f' {self.active_color}'
+        row_string += ' '.join(self.castling) if len(self.castling) > 0 else '-'
 
         # TODO: EXPORT COMPLETE FEN
-        row_string += ' KQkq - 0 1'
+        row_string += ' - 0 1'
         return row_string

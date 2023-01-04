@@ -59,11 +59,12 @@ class Drag:
         piece.is_visible = True
         is_target_square_empty = target_square.is_empty()
         is_en_passant = False
+        is_castling = False
+
+        row = self.initial_square.row
+        col = self.initial_square.col
 
         if len(board.moves) > 0:
-            row = self.initial_square.row
-            col = self.initial_square.col
-
             previous_move = board.moves[-1]
             previous_move_row_delta = abs(previous_move.initial_square.row - previous_move.target_square.row)
             previous_move_distance = (previous_move.target_square.row - row, previous_move.target_square.col - col)
@@ -85,6 +86,65 @@ class Drag:
                     en_passant_piece.is_visible = False
                     en_passant_square.piece = None
 
+        if len(piece.moves) < 2 and not board.evaluation.get('is_check'):
+            invalid_positions = calculate.threat_map(board, 'w' if board.active_color == 'b' else 'b')
+
+            is_allowed = True
+            potential_rook = board.squares[row][0].piece
+
+            possibility = 'q' if col == 4 else 'k'
+
+            if piece.color == 'w':
+                possibility = possibility.upper()
+
+            for current_col in range(1, col):
+                if \
+                        not board.squares[row][current_col].is_empty() or \
+                        (row, current_col) in invalid_positions:
+                    is_allowed = False
+
+            if \
+                    is_allowed and \
+                    potential_rook.name == 'r' and \
+                    len(potential_rook.moves) < 2 and \
+                    possibility in board.castling and \
+                    target_square.row == row and \
+                    target_square.col == 1:
+                board.move(Move(
+                    board.squares[row][0],
+                    board.squares[row][2]
+                ))
+                board.castling.remove(possibility)
+                is_castling = True
+
+            is_allowed = True
+            potential_rook = board.squares[row][7].piece
+
+            possibility = 'q' if possibility.lower() == 'k' else 'k'
+
+            if piece.color == 'w':
+                possibility = possibility.upper()
+
+            for current_col in range(col + 1, 7):
+                if \
+                        not board.squares[row][current_col].is_empty() or \
+                        (row, current_col) in invalid_positions:
+                    is_allowed = False
+
+            if \
+                    is_allowed and \
+                    potential_rook.name == 'r' and \
+                    len(potential_rook.moves) < 2 and \
+                    possibility in board.castling and \
+                    target_square.row == row and \
+                    target_square.col == 6:
+                board.move(Move(
+                    board.squares[row][7],
+                    board.squares[row][5]
+                ))
+                board.castling.remove(possibility)
+                is_castling = True
+
         if len(board.moves) > 0:
             board.moves[-1].target_square.is_highlighted = False
 
@@ -105,6 +165,8 @@ class Drag:
             sound.play('game-end')
         elif evaluation.get('is_check'):
             sound.play('move-check')
+        elif is_castling:
+            sound.play('castle')
         else:
             sound.play(
                 ('move-self' if board.active_color == 'w' else 'move-opponent')

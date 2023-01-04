@@ -165,9 +165,9 @@ def possible_positions(board, square, is_calculating_threat_map=False):
 
                 if \
                         previous_move_row_delta == 2 and \
-                        abs(previous_move_distance[0]) == 0 and \
-                        abs(previous_move_distance[1]) == 1 and \
-                        previous_move.target_square.piece.name == 'p':
+                                abs(previous_move_distance[0]) == 0 and \
+                                abs(previous_move_distance[1]) == 1 and \
+                                previous_move.target_square.piece.name == 'p':
                     positions.append((row + piece.direction, col + previous_move_distance[1]))
 
             if (row == 1 and piece.color == 'b') or (row == 6 and piece.color == 'w'):
@@ -214,6 +214,49 @@ def possible_positions(board, square, is_calculating_threat_map=False):
                 for possible_position in list(positions):
                     if possible_position in invalid_positions:
                         positions.remove(possible_position)
+
+                if len(piece.moves) < 2 and not board.evaluation.get('is_check'):
+                    is_allowed = True
+                    potential_rook = board.squares[row][0].piece
+
+                    possibility = 'q' if col == 4 else 'k'
+
+                    if piece.color == 'w':
+                        possibility = possibility.upper()
+
+                    for current_col in range(1, col):
+                        if \
+                                not board.squares[row][current_col].is_empty() or \
+                                (row, current_col) in invalid_positions:
+                            is_allowed = False
+
+                    if \
+                            is_allowed and \
+                            potential_rook.name == 'r' and \
+                            len(potential_rook.moves) < 2 and \
+                            possibility in board.castling:
+                        positions.append((row, 1))
+
+                    is_allowed = True
+                    potential_rook = board.squares[row][7].piece
+
+                    possibility = 'q' if possibility.lower() == 'k' else 'k'
+
+                    if piece.color == 'w':
+                        possibility = possibility.upper()
+
+                    for current_col in range(col + 1, 7):
+                        if \
+                                not board.squares[row][current_col].is_empty() or \
+                                (row, current_col) in invalid_positions:
+                            is_allowed = False
+
+                    if \
+                            is_allowed and \
+                            potential_rook.name == 'r' and \
+                            len(potential_rook.moves) < 2 and \
+                            possibility in board.castling:
+                        positions.append((row, 6))
 
         for position in list(positions):
             if not Square.in_range(position[0], position[1]):
@@ -282,4 +325,3 @@ def is_stalemate(board, color):
             positions += possible_positions(board, piece.moves[-1].target_square)
 
     return len(set(positions)) == 0
-
