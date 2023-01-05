@@ -119,6 +119,25 @@ class Board:
             piece.moves.append(move)
 
     def load(self, fen):
+        piece_count = {
+            'b': {
+                'p': 8,
+                'n': 2,
+                'b': 2,
+                'r': 2,
+                'q': 1,
+                'k': 1
+            },
+            'w': {
+                'p': 8,
+                'n': 2,
+                'b': 2,
+                'r': 2,
+                'q': 1,
+                'k': 1
+            }
+        }
+
         for group_index, group in enumerate(fen.split(' ')):
             if group_index == 0:
                 for row_index, row in enumerate(group.split('/')):
@@ -129,7 +148,10 @@ class Board:
                             col_index += int(position)
                         else:
                             square = self.squares[row_index][col_index]
-                            piece = Piece(square, position.lower(), 'w' if position.isupper() else 'b')
+                            color = 'w' if position.isupper() else 'b'
+                            name = position.lower()
+                            piece = Piece(square, name, color)
+                            piece_count[color][name] -= 1
                             self.pieces.append(piece)
                             square.piece = piece
                             col_index += 1
@@ -158,6 +180,15 @@ class Board:
 
                             previous_target_square.piece.moves.append(previous_move)
                             self.moves.append(previous_move)
+        for color in piece_count:
+            opposite_color = 'w' if color == 'b' else 'b'
+            for piece_name in piece_count[color]:
+                piece = Piece(self.squares[0][0], piece_name, color)
+                piece.is_visible = True
+                piece.is_captured = True
+
+                for _ in range(0, piece_count[color][piece_name]):
+                    self.captures[opposite_color][piece_name].append(piece)
 
     def save(self):
         row_string = ''

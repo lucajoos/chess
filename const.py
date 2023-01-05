@@ -12,7 +12,7 @@ BOARD_COLS = 8
 SQUARE_SIZE = BOARD_WIDTH // BOARD_COLS
 
 STARTING_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
-DEFAULT_FEN = '7k/4P3/8/8/8/8/4p3/7K b - c3 0 1'
+DEFAULT_FEN = '7k/8/8/5q2/2Pp4/8/8/1Q5K b - c3 0 1'
 
 PIECES = ['p', 'n', 'b', 'r', 'q', 'k']
 
