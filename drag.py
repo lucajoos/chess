@@ -77,10 +77,10 @@ class Drag:
 
             if \
                     previous_move_row_delta == 2 and \
-                    abs(previous_move_distance[0]) == 0 and \
-                    abs(previous_move_distance[1]) == 1 and \
-                    previous_move.target_square.piece.name == 'p' and \
-                    piece.name == 'p':
+                            abs(previous_move_distance[0]) == 0 and \
+                            abs(previous_move_distance[1]) == 1 and \
+                            previous_move.target_square.piece.name == 'p' and \
+                            piece.name == 'p':
                 if target_square.row == row + piece.direction and target_square.col == col + previous_move_distance[1]:
                     is_en_passant = True
                     en_passant_square = previous_move.target_square
@@ -104,17 +104,17 @@ class Drag:
             for current_col in range(1, col):
                 if \
                         not board.squares[row][current_col].is_empty() or \
-                        (row, current_col) in invalid_positions:
+                                (row, current_col) in invalid_positions:
                     is_allowed = False
             if not board.squares[row][0].is_empty():
                 potential_rook = board.squares[row][0].piece
                 if \
                         is_allowed and \
-                        potential_rook.name == 'r' and \
-                        len(potential_rook.moves) < 2 and \
-                        possibility in board.castling and \
-                        target_square.row == row and \
-                        target_square.col == 1:
+                                potential_rook.name == 'r' and \
+                                len(potential_rook.moves) < 2 and \
+                                possibility in board.castling and \
+                                target_square.row == row and \
+                                target_square.col == 1:
                     board.move(Move(
                         board.squares[row][0],
                         board.squares[row][2]
@@ -131,17 +131,17 @@ class Drag:
             for current_col in range(col + 1, 7):
                 if \
                         not board.squares[row][current_col].is_empty() or \
-                        (row, current_col) in invalid_positions:
+                                (row, current_col) in invalid_positions:
                     is_allowed = False
             if not board.squares[row][0].is_empty():
                 potential_rook = board.squares[row][0].piece
                 if \
                         is_allowed and \
-                        potential_rook.name == 'r' and \
-                        len(potential_rook.moves) < 2 and \
-                        possibility in board.castling and \
-                        target_square.row == row and \
-                        target_square.col == 6:
+                                potential_rook.name == 'r' and \
+                                len(potential_rook.moves) < 2 and \
+                                possibility in board.castling and \
+                                target_square.row == row and \
+                                target_square.col == 6:
                     board.move(Move(
                         board.squares[row][7],
                         board.squares[row][5]
@@ -160,11 +160,11 @@ class Drag:
         target_square.is_highlighted = True
 
         if \
-            (
-                (target_square.row == 0 and piece.color == 'w') or
-                (target_square.row == 7 and piece.color == 'b')
-            ) and \
-                piece.name == 'p':
+                (
+                        (target_square.row == 0 and piece.color == 'w') or
+                        (target_square.row == 7 and piece.color == 'b')
+                ) and \
+                        piece.name == 'p':
             board.promotion_square = target_square
         else:
             evaluation = board.evaluate()
@@ -223,7 +223,10 @@ class Drag:
                 target_position = ((event.pos[1] - MENU_HEIGHT) // SQUARE_SIZE, event.pos[0] // SQUARE_SIZE)
                 target_square = board.squares[target_position[0]][target_position[1]]
 
-                if target_square.is_empty() and self.cursor == pygame.SYSTEM_CURSOR_HAND and not self.is_dragging:
+                if \
+                        not self.is_dragging and \
+                        self.cursor == pygame.SYSTEM_CURSOR_HAND and \
+                        target_square.is_empty():
                     pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
                     self.cursor = pygame.SYSTEM_CURSOR_ARROW
                 elif not target_square.is_empty() and self.cursor == pygame.SYSTEM_CURSOR_ARROW:
@@ -237,6 +240,9 @@ class Drag:
                     target_square.has_border = True
 
                     self.hovering_square = target_square
+            elif self.cursor == pygame.SYSTEM_CURSOR_HAND:
+                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+                self.cursor = pygame.SYSTEM_CURSOR_ARROW
 
             if event.type == pygame.MOUSEBUTTONUP:
                 if self.hovering_square is not None:
