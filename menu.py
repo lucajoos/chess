@@ -26,6 +26,7 @@ class Menu:
             'upload': pygame.image.load('assets/images/icons/upload.png'),
             'refresh': pygame.image.load('assets/images/icons/refresh.png')
         }
+
     def draw(self, surface, events, font, board):
         pygame.draw.rect(surface, COLORS.get('MENU'), (0, 0, BOARD_WIDTH, MENU_HEIGHT))
         pygame.draw.rect(surface, COLORS.get('MENU'), (0, BOARD_HEIGHT + MENU_HEIGHT, BOARD_WIDTH, MENU_HEIGHT))
