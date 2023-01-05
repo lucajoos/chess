@@ -1,4 +1,4 @@
-ENVIRONMENT = 'production'
+ENVIRONMENT = 'development'
 
 BOARD_WIDTH = 600
 BOARD_HEIGHT = 600

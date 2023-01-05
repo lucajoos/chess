@@ -26,7 +26,7 @@ class Main:
         self.promotion = Promotion()
         self.overlay = Overlay()
 
-        pygame.display.set_caption(f'Chess{" [DEVELOPMENT]" if ENVIRONMENT == "development" else ""}')
+        pygame.display.set_caption(f'Chess{" [" + ENVIRONMENT + "]" if ENVIRONMENT != "production" else ""}')
         while True:
             self.loop()
 
