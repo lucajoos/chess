@@ -2,8 +2,9 @@ import os
 
 import pygame
 import sys
+import ctypes
 
-from const import BOARD_HEIGHT, BOARD_WIDTH, SQUARE_SIZE, MENU_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT, ENVIRONMENT
+from const import ICON, SCREEN_WIDTH, SCREEN_HEIGHT, ENVIRONMENT
 from drag import Drag
 from game import Game
 from menu import Menu
@@ -13,6 +14,10 @@ from promotion import Promotion
 
 class Main:
     def __init__(self):
+        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID('lucajoos.chess.1.0.0')
+        pygame.display.set_caption(f'Chess{" [" + ENVIRONMENT + "]" if ENVIRONMENT != "production" else ""}')
+        pygame.display.set_icon(pygame.image.load(os.path.join(ICON)))
+
         pygame.init()
 
         self.font_bold_medium = pygame.font.Font(os.path.join('assets', 'fonts', 'Montserrat-Bold.ttf'), 16)
@@ -26,7 +31,6 @@ class Main:
         self.promotion = Promotion()
         self.overlay = Overlay()
 
-        pygame.display.set_caption(f'Chess{" [" + ENVIRONMENT + "]" if ENVIRONMENT != "production" else ""}')
         while True:
             self.loop()
 

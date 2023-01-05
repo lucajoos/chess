@@ -1,5 +1,7 @@
 ENVIRONMENT = 'production'
 
+ICON = 'assets/images/icon.png'
+
 BOARD_WIDTH = 600
 BOARD_HEIGHT = 600
 MENU_HEIGHT = 75
