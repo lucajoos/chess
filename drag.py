@@ -12,6 +12,7 @@ class Drag:
         self.possible_positions = []
         self.initial_square = None
         self.hovering_square = None
+        self.cursor = pygame.SYSTEM_CURSOR_ARROW
         self.pos = (0, 0)
 
     def reset(self):
@@ -214,15 +215,26 @@ class Drag:
 
                         self.blur(board)
 
-            if event.type == pygame.MOUSEMOTION and self.is_dragging:
-                if event.pos[1] > MENU_HEIGHT and SCREEN_HEIGHT - event.pos[1] > MENU_HEIGHT:
-                    self.pos = event.pos
+            if \
+                    event.type == pygame.MOUSEMOTION and \
+                    event.pos[1] > MENU_HEIGHT and \
+                    SCREEN_HEIGHT - event.pos[1] > MENU_HEIGHT:
 
+                self.pos = event.pos
+                target_position = ((event.pos[1] - MENU_HEIGHT) // SQUARE_SIZE, event.pos[0] // SQUARE_SIZE)
+                target_square = board.squares[target_position[0]][target_position[1]]
+
+                if target_square.is_empty() and self.cursor == pygame.SYSTEM_CURSOR_HAND and not self.is_dragging:
+                    pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+                    self.cursor = pygame.SYSTEM_CURSOR_ARROW
+                elif not target_square.is_empty() and self.cursor == pygame.SYSTEM_CURSOR_ARROW:
+                    pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+                    self.cursor = pygame.SYSTEM_CURSOR_HAND
+
+                if self.is_dragging:
                     if self.hovering_square is not None:
                         self.hovering_square.has_border = False
 
-                    target_position = ((event.pos[1] - MENU_HEIGHT) // SQUARE_SIZE, event.pos[0] // SQUARE_SIZE)
-                    target_square = board.squares[target_position[0]][target_position[1]]
                     target_square.has_border = True
 
                     self.hovering_square = target_square
