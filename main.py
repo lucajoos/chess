@@ -1,3 +1,5 @@
+# Chess von Luca Raúl Joos
+
 import os
 
 import pygame
