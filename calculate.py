@@ -138,7 +138,7 @@ def threat_map(board, color):
     return set(positions)
 
 
-def possible_positions(board, square, is_calculating_threat_map=False):
+def possible_positions(board, square, is_calculating_threat_map=False, is_summing_positions=False):
     piece = square.piece
     row = square.row
     col = square.col
@@ -279,7 +279,7 @@ def possible_positions(board, square, is_calculating_threat_map=False):
                         positions.remove(position)
                         was_removed = True
 
-                if not is_calculating_threat_map and not was_removed:
+                if not is_calculating_threat_map and not was_removed and not is_summing_positions:
                     if is_check(board, board.active_color):
                         hypothetical_board = Board()
                         hypothetical_board.load(board.save())
@@ -324,6 +324,6 @@ def is_stalemate(board, color):
 
     for piece in board.pieces:
         if piece.color == color:
-            positions += possible_positions(board, piece.moves[-1].target_square, True)
+            positions += possible_positions(board, piece.moves[-1].target_square, False, True)
 
     return len(set(positions)) == 0
