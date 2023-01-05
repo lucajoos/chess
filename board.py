@@ -8,12 +8,12 @@ from square import Square
 
 class Board:
     def __init__(self):
-        self.squares = None
-        self.moves = None
+        self.squares = [[Square(row, col, None) for col in range(BOARD_COLS)] for row in range(BOARD_ROWS)]
+        self.moves = []
         self.pieces = []
-        self.en_passant_target_square = None
         self.active_color = 'w'
         self.is_inverted = False
+        self.en_passant_target_square = None
         self.promotion_square = None
 
         self.evaluation = {
@@ -44,14 +44,13 @@ class Board:
 
         self.castling = ['K', 'Q', 'k', 'q']
 
-        self.reset()
-
     def reset(self):
         self.squares = [[Square(row, col, None) for col in range(BOARD_COLS)] for row in range(BOARD_ROWS)]
         self.moves = []
-        self.en_passant_target_square = None
+        self.pieces = []
         self.active_color = 'w'
         self.is_inverted = False
+        self.en_passant_target_square = None
         self.promotion_square = None
 
         self.evaluation = {

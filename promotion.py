@@ -9,11 +9,11 @@ class Promotion:
     def __init__(self):
         self.pos = (0, 0)
         self.cursor = pygame.SYSTEM_CURSOR_ARROW
-        self.sleeping = 3
+        self.sleeping = 50
 
     def draw(self, surface, events, board):
-        if board.promotion_square is None and self.sleeping != 3:
-            self.sleeping = 3
+        if board.promotion_square is None and self.sleeping != 50:
+            self.sleeping = 50
         if board.promotion_square is not None:
             if self.sleeping > 0:
                 self.sleeping -= 1
