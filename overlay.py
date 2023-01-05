@@ -10,14 +10,14 @@ class Overlay:
         self.icon = pygame.image.load('assets/images/icons/refresh_big.svg')
         self.pos = (0, 0)
         self.cursor = pygame.SYSTEM_CURSOR_ARROW
-        self.is_sleeping = True
+        self.sleeping = 3
 
     def draw(self, surface, events, board):
-        if board.evaluation.get('result') is None and not self.is_sleeping:
-            self.is_sleeping = True
+        if board.evaluation.get('result') is None and self.sleeping != 3:
+            self.sleeping = 3
         if board.evaluation.get('result') is not None:
-            if self.is_sleeping:
-                self.is_sleeping = False
+            if self.sleeping > 0:
+                self.sleeping -= 1
             else:
                 for event in events:
                     if event.type == pygame.MOUSEMOTION:
