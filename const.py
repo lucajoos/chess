@@ -1,5 +1,9 @@
 ENVIRONMENT = 'production'
+VERSION = '1.0.0'
 
+ID = f'lucajoos.chess.{VERSION}'
+
+ICON_SMALL = 'assets/images/icon_small.png'
 ICON = 'assets/images/icon.png'
 
 BOARD_WIDTH = 600

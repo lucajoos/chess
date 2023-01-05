@@ -4,7 +4,7 @@ import pygame
 import sys
 import ctypes
 
-from const import ICON, SCREEN_WIDTH, SCREEN_HEIGHT, ENVIRONMENT
+from const import ICON, SCREEN_WIDTH, SCREEN_HEIGHT, ENVIRONMENT, ID, ICON_SMALL
 from drag import Drag
 from game import Game
 from menu import Menu
@@ -14,9 +14,13 @@ from promotion import Promotion
 
 class Main:
     def __init__(self):
-        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID('lucajoos.chess.1.0.0')
+        if hasattr(ctypes, 'windll'):
+            ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(ID)
+            pygame.display.set_icon(pygame.image.load(os.path.join(ICON_SMALL)))
+        else:
+            pygame.display.set_icon(pygame.image.load(os.path.join(ICON)))
+
         pygame.display.set_caption(f'Chess{" [" + ENVIRONMENT + "]" if ENVIRONMENT != "production" else ""}')
-        pygame.display.set_icon(pygame.image.load(os.path.join(ICON)))
 
         pygame.init()
 
