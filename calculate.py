@@ -165,9 +165,9 @@ def possible_positions(board, square, is_calculating_threat_map=False):
 
                 if \
                         previous_move_row_delta == 2 and \
-                                abs(previous_move_distance[0]) == 0 and \
-                                abs(previous_move_distance[1]) == 1 and \
-                                previous_move.target_square.piece.name == 'p':
+                        abs(previous_move_distance[0]) == 0 and \
+                        abs(previous_move_distance[1]) == 1 and \
+                        previous_move.target_square.piece.name == 'p':
                     positions.append((row + piece.direction, col + previous_move_distance[1]))
 
             if (row == 1 and piece.color == 'b') or (row == 6 and piece.color == 'w'):
@@ -260,48 +260,48 @@ def possible_positions(board, square, is_calculating_threat_map=False):
                                 possibility in board.castling:
                             positions.append((row, 6))
 
-        for position in list(positions):
-            if not Square.in_range(position[0], position[1]):
+    for position in list(positions):
+        if not Square.in_range(position[0], position[1]):
+            positions.remove(position)
+        else:
+            target_square = board.squares[position[0]][position[1]]
+            target_piece = target_square.piece
+
+            if target_square == square:
                 positions.remove(position)
             else:
-                target_square = board.squares[position[0]][position[1]]
-                target_piece = target_square.piece
+                was_removed = False
 
-                if target_square == square:
-                    positions.remove(position)
-                else:
-                    if not target_square.is_empty():
-                        if target_piece.color == square.piece.color or \
-                                (target_piece.name == 'k' and not is_calculating_threat_map) or \
-                                (piece.name == 'p' and target_square.col == square.col):
+                if not target_square.is_empty():
+                    if target_piece.color == square.piece.color or \
+                            (target_piece.name == 'k' and not is_calculating_threat_map) or \
+                            (piece.name == 'p' and target_square.col == square.col):
+                        positions.remove(position)
+                        was_removed = True
+
+                if not is_calculating_threat_map and not was_removed:
+                    if is_check(board, board.active_color):
+                        hypothetical_board = Board()
+                        hypothetical_board.load(board.save())
+
+                        hypothetical_board.move(Move(
+                            hypothetical_board.squares[square.row][square.col],
+                            hypothetical_board.squares[position[0]][position[1]]
+                        ))
+
+                        if is_check(hypothetical_board, board.active_color):
                             positions.remove(position)
+                    else:
+                        hypothetical_board = Board()
+                        hypothetical_board.load(board.save())
 
-        if not is_calculating_threat_map and piece.name == 'k':
-            for possible_position in list(positions):
-                hypothetical_board = Board()
-                hypothetical_board.load(board.save())
+                        hypothetical_board.move(Move(
+                            hypothetical_board.squares[row][col],
+                            hypothetical_board.squares[position[0]][position[1]]
+                        ))
 
-                hypothetical_board.move(Move(
-                    hypothetical_board.squares[row][col],
-                    hypothetical_board.squares[possible_position[0]][possible_position[1]]
-                ))
-
-                if is_check(hypothetical_board, hypothetical_board.active_color):
-                    positions.remove(possible_position)
-
-    if not is_calculating_threat_map:
-        if is_check(board, board.active_color):
-            for possible_position in list(positions):
-                hypothetical_board = Board()
-                hypothetical_board.load(board.save())
-
-                hypothetical_board.move(Move(
-                    hypothetical_board.squares[square.row][square.col],
-                    hypothetical_board.squares[possible_position[0]][possible_position[1]]
-                ))
-
-                if is_check(hypothetical_board, hypothetical_board.active_color):
-                    positions.remove(possible_position)
+                        if is_check(hypothetical_board, board.active_color):
+                            positions.remove(position)
 
     return positions
 
