@@ -40,13 +40,13 @@ class Square:
         return True
 
     @staticmethod
-    def square_to_algebraic_notation(board, square):
-        return f'{chr(104 - square.col if board.is_inverted else square.col + 97)}{str(square.row + 1 if board.is_inverted else 8 - square.row)}'
+    def square_to_algebraic_notation(square):
+        return f'{chr(square.col + 97)}{str(8 - square.row)}'
 
     @staticmethod
     def get_square_from_algebraic_notation(board, string):
         split = list(string)
-        col = 104 + ord(split[0]) if board.is_inverted else ord(split[0]) - 97
-        row = int(split[1]) + 1 if board.is_inverted else 8 - int(split[1])
+        col = ord(split[0]) - 97
+        row = 8 - int(split[1])
 
         return board.squares[row][col]

@@ -12,7 +12,6 @@ class Board:
         self.moves = []
         self.pieces = []
         self.active_color = 'w'
-        self.is_inverted = False
         self.en_passant_target_square = None
         self.promotion_square = None
 
@@ -49,7 +48,6 @@ class Board:
         self.moves = []
         self.pieces = []
         self.active_color = 'w'
-        self.is_inverted = False
         self.en_passant_target_square = None
         self.promotion_square = None
 
@@ -218,6 +216,6 @@ class Board:
         row_string += f' {self.active_color} '
         row_string += ' '.join(self.castling) if len(self.castling) > 0 else '-'
 
-        row_string += f' {"-" if self.en_passant_target_square is None else Square.square_to_algebraic_notation(self, self.en_passant_target_square)}'
+        row_string += f' {"-" if self.en_passant_target_square is None else Square.square_to_algebraic_notation(self.en_passant_target_square)}'
         row_string += ' 0 1'
         return row_string

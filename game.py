@@ -74,9 +74,9 @@ class Game:
 
                     if col == 0:
                         anchor = tuple(map(sum, zip(square.top_left_corner, (3, 3))))
-                        img = font.render(str(row) if ENVIRONMENT == 'development' else str(row + 1 if self.board.is_inverted else 8 - row), True, square.get_inverted_color('DEFAULT'))
+                        img = font.render(str(row) if ENVIRONMENT == 'development' else str(8 - row), True, square.get_inverted_color('DEFAULT'))
                         surface.blit(img, img.get_rect(topleft=anchor))
                     if row == BOARD_ROWS - 1:
                         anchor = tuple(map(sum, zip(square.bottom_right_corner, (-3, -3))))
-                        img = font.render(str(col) if ENVIRONMENT == 'development' else chr(104 - col if self.board.is_inverted else col + 97), True, square.get_inverted_color('DEFAULT'))
+                        img = font.render(str(col) if ENVIRONMENT == 'development' else chr(col + 97), True, square.get_inverted_color('DEFAULT'))
                         surface.blit(img, img.get_rect(bottomright=anchor))
