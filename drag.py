@@ -4,7 +4,6 @@ import calculate
 import sound
 from const import SQUARE_SIZE, BOARD_ROWS, BOARD_COLS, ENVIRONMENT, MENU_HEIGHT, SCREEN_HEIGHT
 from move import Move
-from square import Square
 
 
 class Drag:
