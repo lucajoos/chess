@@ -1,5 +1,5 @@
 import math
-
+import os.path
 import pygame.draw
 
 import dialog
@@ -116,11 +116,14 @@ class Menu:
                     filename = dialog.load()
 
                     if filename is not None:
-                        file = open(filename, 'r')
-                        fen = file.read()
-                        board.load(fen)
-                        board.evaluation = board.evaluate()
-                        sound.play('game-start')
+                        if len(filename) > 0:
+                            if os.path.exists(filename):
+                                file = open(filename, 'r')
+                                fen = file.read()
+                                board.reset()
+                                board.load(fen)
+                                board.evaluation = board.evaluate()
+                                sound.play('game-start')
                 if hovering_option == 'refresh':
                     board.reset()
                     board.load(DEFAULT_FEN)
