@@ -81,3 +81,5 @@ class Promotion:
 
                         if ENVIRONMENT == 'development':
                             print(evaluation)
+
+                        self.pos = (0, 0)

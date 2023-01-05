@@ -93,7 +93,7 @@ class Menu:
             if is_hovering:
                 hovering_option = option
 
-            pygame.draw.rect(surface, COLORS.get('FONT_LIGHT') if is_hovering else COLORS.get('FONT_SECONDARY'), rect_bg, 0, 3)
+            pygame.draw.rect(surface, COLORS.get('FONT_HOVER') if is_hovering else COLORS.get('FONT_SECONDARY'), rect_bg, 0, 3)
             surface.blit(img, rect)
 
         if hovering_option is not None and self.cursor == pygame.SYSTEM_CURSOR_ARROW:

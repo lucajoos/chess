@@ -2,8 +2,6 @@ import pygame.draw
 
 from board import Board
 from const import BOARD_ROWS, BOARD_COLS, SQUARE_SIZE, COLORS, DEFAULT_FEN, MENU_HEIGHT, ENVIRONMENT
-from piece import Piece
-
 
 class Game:
     def __init__(self):

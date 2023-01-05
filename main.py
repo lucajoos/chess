@@ -7,6 +7,7 @@ from const import BOARD_HEIGHT, BOARD_WIDTH, SQUARE_SIZE, MENU_HEIGHT, SCREEN_WI
 from drag import Drag
 from game import Game
 from menu import Menu
+from overlay import Overlay
 from promotion import Promotion
 
 
@@ -23,6 +24,7 @@ class Main:
         self.drag = Drag()
         self.menu = Menu(self.font_bold_small)
         self.promotion = Promotion()
+        self.overlay = Overlay()
 
         pygame.display.set_caption(f'Chess{" [DEVELOPMENT]" if ENVIRONMENT == "development" else ""}')
         while True:
@@ -45,10 +47,7 @@ class Main:
         self.game.draw_pieces(self.screen)
         self.promotion.draw(self.screen, events, self.game.board)
         self.drag.draw(self.screen)
-
-        if self.game.board.active_color is None:
-            # TODO: draw result
-            pass
+        self.overlay.draw(self.screen, events, self.game.board)
 
         pygame.display.update()
 
