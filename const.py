@@ -1,4 +1,4 @@
-ENVIRONMENT = 'development'
+ENVIRONMENT = 'production'
 
 BOARD_WIDTH = 600
 BOARD_HEIGHT = 600
@@ -12,7 +12,7 @@ BOARD_COLS = 8
 SQUARE_SIZE = BOARD_WIDTH // BOARD_COLS
 
 STARTING_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
-DEFAULT_FEN = '7k/8/8/8/8/8/2qp4/7K b - - 0 1'
+DEFAULT_FEN = STARTING_FEN
 
 PIECES = ['p', 'n', 'b', 'r', 'q', 'k']
 

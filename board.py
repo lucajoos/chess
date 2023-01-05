@@ -213,8 +213,8 @@ class Board:
             if row_index < BOARD_ROWS - 1:
                 row_string += '/'
 
-        row_string += f' {self.active_color} '
-        row_string += ' '.join(self.castling) if len(self.castling) > 0 else '-'
+        row_string += f' {self.active_color}'
+        row_string += f' {"".join(self.castling) if len(self.castling) > 0 else "-"}'
 
         row_string += f' {"-" if self.en_passant_target_square is None else Square.square_to_algebraic_notation(self.en_passant_target_square)}'
         row_string += ' 0 1'
