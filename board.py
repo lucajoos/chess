@@ -12,6 +12,7 @@ class Board:
         self.moves = []
         self.pieces = []
         self.active_color = 'w'
+        self.inactive_color = 'b'
         self.en_passant_target_square = None
         self.promotion_square = None
 
@@ -48,6 +49,7 @@ class Board:
         self.moves = []
         self.pieces = []
         self.active_color = 'w'
+        self.inactive_color = 'b'
         self.en_passant_target_square = None
         self.promotion_square = None
 
@@ -112,6 +114,10 @@ class Board:
             move.initial_square.piece = None
             move.target_square.piece = piece
 
+            previous_inactive_color = self.inactive_color
+            self.inactive_color = self.active_color
+            self.active_color = previous_inactive_color
+
             self.moves.append(move)
             piece.moves.append(move)
 
@@ -154,6 +160,7 @@ class Board:
                             col_index += 1
             elif group_index == 1:
                 self.active_color = group
+                self.inactive_color = 'w' if group == 'b' else 'b'
             elif group_index == 2:
                 self.castling = '-' if group == '-' else list(group)
             elif group_index == 3:

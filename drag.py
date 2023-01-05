@@ -158,7 +158,6 @@ class Drag:
         ))
 
         target_square.is_highlighted = True
-        board.active_color = 'b' if board.active_color == 'w' else 'w'
 
         if \
             (
