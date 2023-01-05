@@ -70,7 +70,6 @@ class Promotion:
                         board.promotion_square = None
                         board.pieces.append(hovering_piece)
 
-                        sound.play('promote')
                         self.has_skipped_event = False
 
                         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
@@ -81,5 +80,12 @@ class Promotion:
 
                         if ENVIRONMENT == 'development':
                             print(evaluation)
+
+                        if evaluation.get('result') is not None:
+                            sound.play('game-end')
+                        elif evaluation.get('is_check'):
+                            sound.play('move-check')
+                        else:
+                            sound.play('promote')
 
                         self.pos = (0, 0)
