@@ -186,7 +186,6 @@ class Drag:
                     if (is_target_square_empty and not is_en_passant) else 'capture'
                 )
 
-
     def handle(self, board, event):
         if board.evaluation.get('result') is None and board.promotion_square is None:
             if event.type == pygame.MOUSEBUTTONDOWN:
