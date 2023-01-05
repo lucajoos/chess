@@ -83,7 +83,7 @@ class Board:
         self.castling = ['K', 'Q', 'k', 'q']
 
     def evaluate(self):
-        is_check = calculate.is_check(self, 'w' if self.active_color == 'b' else 'b')
+        is_check = calculate.is_check(self, self.active_color)
         is_stalemate = calculate.is_stalemate(self, self.active_color)
         is_checkmate = is_check and is_stalemate
         result = None
@@ -97,7 +97,7 @@ class Board:
         return {
             'is_check': is_check,
             'is_stalemate': is_stalemate,
-            'is_checkmate': is_check and is_stalemate,
+            'is_checkmate': is_checkmate,
             'result': result
         }
 
