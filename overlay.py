@@ -7,7 +7,7 @@ from const import MENU_HEIGHT, BOARD_WIDTH, BOARD_HEIGHT, COLORS, DEFAULT_FEN
 
 class Overlay:
     def __init__(self):
-        self.icon = pygame.image.load('assets/images/icons/refresh_big.svg')
+        self.icon = pygame.image.load('assets/images/icons/refresh_big.png')
         self.pos = (0, 0)
         self.cursor = pygame.SYSTEM_CURSOR_ARROW
         self.sleeping = 50
