@@ -1,4 +1,4 @@
-# Chess v1.0.0
+# Chess v1.0.1
 ## Requirements
 This program was tested using `python v3.10.0`.
 
@@ -16,3 +16,6 @@ Use `python` to initialize the main file `main.py`:
 ```bash
 python main.py
 ```
+
+## Assets
+The assets (including sounds and images) are from [chess.com](https://chess.com).
