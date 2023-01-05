@@ -324,6 +324,6 @@ def is_stalemate(board, color):
 
     for piece in board.pieces:
         if piece.color == color:
-            positions += possible_positions(board, piece.moves[-1].target_square)
+            positions += possible_positions(board, piece.moves[-1].target_square, True)
 
     return len(set(positions)) == 0
