@@ -19,3 +19,4 @@ python main.py
 
 ## Assets
 The assets (including sounds and images) are from [chess.com](https://chess.com).
+The icons are from the [Feather](https://feathericons.com/) collection.
